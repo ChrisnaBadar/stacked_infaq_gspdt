@@ -1,21 +1,23 @@
 import 'dart:async';
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:infaq/models/fundraises_list_model.dart';
 import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/common/ui_helpers.dart';
+import 'package:infaq/ui/views/home/home_viewmodel.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class HomeHeader extends StatefulWidget {
-  const HomeHeader({super.key});
+  final HomeViewModel viewModel;
+  final FundraisesListModel? fundraisesListModel;
+  const HomeHeader(
+      {super.key, required this.viewModel, required this.fundraisesListModel});
 
   @override
   State<HomeHeader> createState() => _HomeHeaderState();
 }
 
 class _HomeHeaderState extends State<HomeHeader> {
-  List featuredWidget =
-      List.generate(5, (index) => 'https://picsum.photos/4${index}0/200');
   int _currentIndex = 0;
   Timer? _timer;
 
@@ -37,41 +39,56 @@ class _HomeHeaderState extends State<HomeHeader> {
 
   @override
   Widget build(BuildContext context) {
+    List featuredWidget = List.generate(5, (index) {
+      var fundraiser = widget.fundraisesListModel!.data![index];
+      return {
+        "img":
+            "https://api.amala-api.online${fundraiser.attributes!.mainImage!.data!.attributes!.url!}",
+        "title":
+            fundraiser.attributes!.title!, // Assuming title is available here
+        "description": fundraiser.attributes!.description!.first.children!.first
+            .text // Assuming description is available here
+      };
+    });
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Stack(
-        children: featuredWidget.asMap().entries.map((entry) {
-          int idx = entry.key;
-          String imgPath = entry.value;
+        children: featuredWidget.map((fundraiser) {
+          int idx = featuredWidget.indexOf(fundraiser);
+          String imgPath = fundraiser["img"];
+          String title = fundraiser["title"];
+          String description = fundraiser["description"];
+
           return AnimatedOpacity(
               opacity: _currentIndex == idx ? 1.0 : 0.0,
               duration: const Duration(seconds: 1),
               child: ScreenTypeLayout.builder(
-                desktop: (_) => _cardDesignDesktop(imgPath),
-                mobile: (_) => _cardDesignMobile(imgPath),
+                desktop: (_) => _cardDesignDesktop(imgPath, title, description),
+                mobile: (_) => _cardDesignMobile(imgPath, title, description),
               ));
         }).toList(),
       ),
     );
   }
 
-  _cardDesignMobile(String data) {
+  _cardDesignMobile(String data, String title, String description) {
     return Column(
       children: [
         //image
         _firstChild(data),
 
         //info
-        _secondChild(data)
+        _secondChild(widget.viewModel, title, description)
       ],
     );
   }
 
-  _cardDesignDesktop(String data) {
+  _cardDesignDesktop(String data, String title, String description) {
     return Row(
       children: [
         Expanded(flex: 2, child: _firstChild(data)),
-        Expanded(child: _secondChild(data))
+        Expanded(child: _secondChild(widget.viewModel, title, description))
       ],
     );
   }
@@ -102,7 +119,9 @@ class _HomeHeaderState extends State<HomeHeader> {
     );
   }
 
-  Widget _secondChild(String data) {
+  Widget _secondChild(
+      HomeViewModel viewModel, String title, String description) {
+    print(title);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       height: 400,
@@ -132,7 +151,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                           onPressed: () {
                             setState(() {
                               if (_currentIndex == 0) {
-                                _currentIndex = featuredWidget.length - 1;
+                                _currentIndex = 5 - 1;
                               } else {
                                 _currentIndex--;
                               }
@@ -148,8 +167,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                       IconButton(
                           onPressed: () {
                             setState(() {
-                              _currentIndex =
-                                  (_currentIndex + 1) % featuredWidget.length;
+                              _currentIndex = (_currentIndex + 1) % 5;
                             });
                           },
                           icon: const Icon(Icons.keyboard_arrow_right,
@@ -164,7 +182,7 @@ class _HomeHeaderState extends State<HomeHeader> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: List.generate(featuredWidget.length, (index) {
+                children: List.generate(5, (index) {
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 4.0),
                     width: 10,
@@ -186,9 +204,9 @@ class _HomeHeaderState extends State<HomeHeader> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                data,
+                title,
                 textAlign: TextAlign.start,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: ktsBodyLarge.copyWith(
                     fontSize: 20,
@@ -197,7 +215,7 @@ class _HomeHeaderState extends State<HomeHeader> {
               ),
               verticalSpace(10),
               Text(
-                faker.lorem.sentences(10).join(" "),
+                description,
                 maxLines: 8,
                 overflow: TextOverflow.ellipsis,
                 style: ktsBodyRegular.copyWith(color: Colors.white),
@@ -206,6 +224,8 @@ class _HomeHeaderState extends State<HomeHeader> {
               MaterialButton(
                 onPressed: () {
                   // Add your onPressed code here
+                  viewModel.showDonateDialog(
+                      causeTitle: title, description: description);
                 },
                 color: kcVeryLightGrey,
                 textColor: kcPrimaryColorDark,

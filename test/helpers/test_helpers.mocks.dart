@@ -7,6 +7,9 @@ import 'dart:async' as _i4;
 import 'dart:ui' as _i8;
 
 import 'package:flutter/material.dart' as _i5;
+import 'package:infaq/models/fundraise_model.dart' as _i13;
+import 'package:infaq/models/fundraises_list_model.dart' as _i12;
+import 'package:infaq/services/http_service.dart' as _i11;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:stacked/stacked.dart' as _i2;
 import 'package:stacked_services/src/bottom_sheet/bottom_sheet_service.dart'
@@ -570,4 +573,32 @@ class MockDialogService extends _i1.Mock implements _i9.DialogService {
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [HttpService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockHttpService extends _i1.Mock implements _i11.HttpService {
+  @override
+  _i4.Future<_i12.FundraisesListModel?> getFundraisesData() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getFundraisesData,
+          [],
+        ),
+        returnValue: _i4.Future<_i12.FundraisesListModel?>.value(),
+        returnValueForMissingStub:
+            _i4.Future<_i12.FundraisesListModel?>.value(),
+      ) as _i4.Future<_i12.FundraisesListModel?>);
+
+  @override
+  _i4.Future<_i13.FundraiseModel?> getSingleFundraiseData(String? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getSingleFundraiseData,
+          [id],
+        ),
+        returnValue: _i4.Future<_i13.FundraiseModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i13.FundraiseModel?>.value(),
+      ) as _i4.Future<_i13.FundraiseModel?>);
 }

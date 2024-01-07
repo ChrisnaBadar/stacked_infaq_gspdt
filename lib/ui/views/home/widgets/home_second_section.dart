@@ -46,6 +46,19 @@ Widget _aboutUs(BuildContext context) {
             "https://picsum.photos/200/300",
             width: double.infinity,
             fit: BoxFit.cover,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) {
+                return child; // Image is fully loaded
+              }
+              return const Center(
+                child: CircularProgressIndicator(
+                  color:
+                      kcPrimaryColor, // Show progress indicator while image is loading
+                ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) => const SizedBox(),
           ),
           Container(color: kcBackgroundColor.withOpacity(.75)),
           Padding(
@@ -114,6 +127,19 @@ Widget _urgentCause(BuildContext context) {
             "https://picsum.photos/400/200",
             width: double.infinity,
             fit: BoxFit.cover,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) {
+                return child; // Image is fully loaded
+              }
+              return const Center(
+                child: CircularProgressIndicator(
+                  color:
+                      kcPrimaryColor, // Show progress indicator while image is loading
+                ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) => const SizedBox(),
           ),
           Container(color: kcBackgroundColor.withOpacity(.75)),
           Padding(

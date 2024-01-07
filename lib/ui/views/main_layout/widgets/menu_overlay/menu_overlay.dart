@@ -20,10 +20,12 @@ class MenuOverlay extends StackedView<MenuOverlayViewModel> {
       color: kcMediumGrey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 60,
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: viewModel.isBusy
                 ? const CircularProgressIndicator()
                 : GestureDetector(
@@ -32,15 +34,27 @@ class MenuOverlay extends StackedView<MenuOverlayViewModel> {
                       await viewModel.toHome();
                       onMenuItemTapped?.call();
                     },
-                    child: const Text(
-                      'Home',
-                      style: TextStyle(color: Colors.white),
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.home_outlined,
+                          color: kcWhite,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Home',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
           ).showCursorOnHover,
           Container(
             height: 60,
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: viewModel.isBusy
                 ? const CircularProgressIndicator()
                 : GestureDetector(
@@ -49,15 +63,27 @@ class MenuOverlay extends StackedView<MenuOverlayViewModel> {
                       await viewModel.toProfile();
                       onMenuItemTapped?.call();
                     },
-                    child: const Text(
-                      'Profile',
-                      style: TextStyle(color: Colors.white),
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.person_outline,
+                          color: kcWhite,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Profile',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
           ).showCursorOnHover,
           Container(
             height: 60,
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: viewModel.isBusy
                 ? const CircularProgressIndicator()
                 : GestureDetector(
@@ -66,9 +92,20 @@ class MenuOverlay extends StackedView<MenuOverlayViewModel> {
                       await viewModel.toPortofolio();
                       onMenuItemTapped?.call();
                     },
-                    child: const Text(
-                      'Portofolio',
-                      style: TextStyle(color: Colors.white),
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.document_scanner_outlined,
+                          color: kcWhite,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Portofolio',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
           ).showCursorOnHover,

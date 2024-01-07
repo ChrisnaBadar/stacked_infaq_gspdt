@@ -1,36 +1,29 @@
-import 'package:infaq/app/app.bottomsheets.dart';
 import 'package:infaq/app/app.dialogs.dart';
 import 'package:infaq/app/app.locator.dart';
-import 'package:infaq/ui/common/app_strings.dart';
+import 'package:infaq/app/app.router.dart';
+import 'package:infaq/models/fundraises_list_model.dart';
+import 'package:infaq/services/http_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class HomeViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
-  final _bottomSheetService = locator<BottomSheetService>();
+  final _routerService = locator<RouterService>();
+  final _httpService = locator<HttpService>();
 
-  String get counterLabel => 'Counter is: $_counter';
-
-  int _counter = 0;
-
-  void incrementCounter() {
-    _counter++;
-    rebuildUi();
-  }
-
-  void showDialog() {
+  void showDonateDialog(
+      {required String causeTitle, required String description}) {
     _dialogService.showCustomDialog(
-      variant: DialogType.infoAlert,
-      title: 'Stacked Rocks!',
-      description: 'Give stacked $_counter stars on Github',
-    );
+        variant: DialogType.donate,
+        title: causeTitle,
+        description: 'Donate now to $causeTitle with id $description');
   }
 
-  void showBottomSheet() {
-    _bottomSheetService.showCustomSheet(
-      variant: BottomSheetType.notice,
-      title: ksHomeBottomSheetTitle,
-      description: ksHomeBottomSheetDescription,
-    );
+  Future<void> toCauseDetailsView() async {
+    await _routerService.navigateToCauseDetailsView(causeId: "test-id");
+  }
+
+  Future<FundraisesListModel?> getFundraisesData() async {
+    return await _httpService.getFundraisesData();
   }
 }

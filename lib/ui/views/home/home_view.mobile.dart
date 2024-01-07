@@ -1,8 +1,9 @@
-import 'package:infaq/ui/common/app_colors.dart';
-import 'package:infaq/ui/common/ui_helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:infaq/ui/views/home/widgets/home_cause_slider.dart';
+import 'package:infaq/ui/views/home/widgets/home_fourth_section.dart';
 import 'package:infaq/ui/views/home/widgets/home_header.dart';
 import 'package:infaq/ui/views/home/widgets/home_second_section.dart';
+import 'package:infaq/ui/views/home/widgets/home_third_section.dart';
 import 'package:stacked/stacked.dart';
 
 import 'home_viewmodel.dart';
@@ -14,7 +15,18 @@ class HomeViewMobile extends ViewModelWidget<HomeViewModel> {
   Widget build(BuildContext context, HomeViewModel viewModel) {
     return Scaffold(
       body: ListView(
-        children: [HomeHeader(), HomeSecondSection()],
+        children: [
+          HomeHeader(
+            viewModel: viewModel,
+            fundraisesListModel: null,
+          ),
+          HomeSecondSection(),
+          HomeCauseSlider(
+            viewModel: viewModel,
+          ),
+          HomeThirdSection(),
+          HomeFourthSection()
+        ],
       ),
     );
   }
