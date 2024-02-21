@@ -65,6 +65,8 @@ class PurpleAttributes {
   DateTime? updatedAt;
   DateTime? publishedAt;
   String? imageLink;
+  bool? urgentCause;
+  bool? featuredCause;
   MainImage? mainImage;
   Donations? donations;
   FundraiseReports? fundraiseReports;
@@ -80,6 +82,8 @@ class PurpleAttributes {
     this.updatedAt,
     this.publishedAt,
     this.imageLink,
+    this.urgentCause,
+    this.featuredCause,
     this.mainImage,
     this.donations,
     this.fundraiseReports,
@@ -114,6 +118,8 @@ class PurpleAttributes {
             ? null
             : DateTime.parse(json["publishedAt"]),
         imageLink: json["imageLink"],
+        urgentCause: json["urgentCause"],
+        featuredCause: json["featuredCause"],
         mainImage: json["mainImage"] == null
             ? null
             : MainImage.fromJson(json["mainImage"]),
@@ -142,6 +148,8 @@ class PurpleAttributes {
         "updatedAt": updatedAt?.toIso8601String(),
         "publishedAt": publishedAt?.toIso8601String(),
         "imageLink": imageLink,
+        "urgentCause": urgentCause,
+        "featuredCause": featuredCause,
         "mainImage": mainImage?.toJson(),
         "donations": donations?.toJson(),
         "fundraise_reports": fundraiseReports?.toJson(),

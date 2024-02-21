@@ -39,56 +39,66 @@ class _HomeHeaderState extends State<HomeHeader> {
 
   @override
   Widget build(BuildContext context) {
-    List featuredWidget = List.generate(5, (index) {
-      var fundraiser = widget.fundraisesListModel!.data![index];
+    List<FundraisesListModelDatum> featuredData = widget
+        .fundraisesListModel!.data!
+        .where((e) => e.attributes!.featuredCause == true)
+        .toList();
+    List dataList = List.generate(featuredData.length, (index) {
+      var fundraiser = featuredData[index];
       return {
         "img":
             "https://api.amala-api.online${fundraiser.attributes!.mainImage!.data!.attributes!.url!}",
         "title":
             fundraiser.attributes!.title!, // Assuming title is available here
         "description": fundraiser.attributes!.description!.first.children!.first
-            .text // Assuming description is available here
+            .text, // Assuming description is available here
+        "causeId": fundraiser.id.toString()
       };
     });
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Stack(
-        children: featuredWidget.map((fundraiser) {
-          int idx = featuredWidget.indexOf(fundraiser);
-          String imgPath = fundraiser["img"];
-          String title = fundraiser["title"];
-          String description = fundraiser["description"];
-
-          return AnimatedOpacity(
-              opacity: _currentIndex == idx ? 1.0 : 0.0,
-              duration: const Duration(seconds: 1),
-              child: ScreenTypeLayout.builder(
-                desktop: (_) => _cardDesignDesktop(imgPath, title, description),
-                mobile: (_) => _cardDesignMobile(imgPath, title, description),
-              ));
-        }).toList(),
+      child: Center(
+        child: AnimatedSwitcher(
+          duration: const Duration(seconds: 1),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          child: ScreenTypeLayout.builder(
+            desktop: (_) =>
+                _cardDesignDesktop(dataList: dataList[_currentIndex]),
+            mobile: (_) => _cardDesignMobile(dataList: dataList[_currentIndex]),
+          ),
+        ),
       ),
     );
   }
 
-  _cardDesignMobile(String data, String title, String description) {
+  // ContainerWidget(
+  // key: ValueKey<int>(_currentIndex),
+  // data: myList[_currentIndex],
+  // )
+
+  _cardDesignMobile({required Map<String, dynamic> dataList}) {
     return Column(
       children: [
         //image
-        _firstChild(data),
+        _firstChild(dataList['img']),
 
         //info
-        _secondChild(widget.viewModel, title, description)
+        _secondChild(widget.viewModel, dataList['title'],
+            dataList['description'], dataList['causeId'])
       ],
     );
   }
 
-  _cardDesignDesktop(String data, String title, String description) {
+  _cardDesignDesktop({required Map<String, dynamic> dataList}) {
     return Row(
       children: [
-        Expanded(flex: 2, child: _firstChild(data)),
-        Expanded(child: _secondChild(widget.viewModel, title, description))
+        Expanded(flex: 2, child: _firstChild(dataList['img'])),
+        Expanded(
+            child: _secondChild(widget.viewModel, dataList['title'],
+                dataList['description'], dataList['causeId']))
       ],
     );
   }
@@ -119,8 +129,8 @@ class _HomeHeaderState extends State<HomeHeader> {
     );
   }
 
-  Widget _secondChild(
-      HomeViewModel viewModel, String title, String description) {
+  Widget _secondChild(HomeViewModel viewModel, String title, String description,
+      String causeId) {
     print(title);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -216,10 +226,16 @@ class _HomeHeaderState extends State<HomeHeader> {
               verticalSpace(10),
               Text(
                 description,
-                maxLines: 8,
+                maxLines: 6,
                 overflow: TextOverflow.ellipsis,
                 style: ktsBodyRegular.copyWith(color: Colors.white),
               ),
+              verticalSpace(10),
+              TextButton(
+                  onPressed: () {
+                    viewModel.toCauseDetailsView(causeId: causeId);
+                  },
+                  child: Text("Learn more ...")),
               verticalSpace(10),
               MaterialButton(
                 onPressed: () {

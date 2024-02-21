@@ -1,14 +1,15 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/common/ui_helpers.dart';
+import 'package:infaq/ui/views/cause_details/cause_details_viewmodel.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class CauseDetailsArticles extends StatefulWidget {
-  const CauseDetailsArticles({super.key});
+  final CauseDetailsViewModel viewModel;
+  const CauseDetailsArticles({super.key, required this.viewModel});
 
   @override
   State<CauseDetailsArticles> createState() => _CauseDetailsArticlesState();
@@ -64,6 +65,7 @@ class _CauseDetailsArticlesState extends State<CauseDetailsArticles> {
           ),
           CauseListCarousel(
             controller: _controller,
+            viewModel: widget.viewModel,
           ),
         ],
       ),
@@ -73,83 +75,65 @@ class _CauseDetailsArticlesState extends State<CauseDetailsArticles> {
 
 class CauseListCarousel extends StatelessWidget {
   final CarouselController controller;
-  final List<Widget> _items = [
-    const CauseItem(
-        title: 'Send Food To Middle East',
-        progress: 0.82,
-        toGo: '\$21,444 To Go',
-        imgLink: "https://picsum.photos/410/200"),
-    const CauseItem(
-        title: 'Drought And Hunger',
-        progress: 0.03,
-        toGo: '\$96,312 To Go',
-        imgLink: "https://picsum.photos/420/200"),
-    const CauseItem(
-        title: 'More Plants Needed',
-        progress: 0.73,
-        toGo: '\$21,313 To Go',
-        imgLink: "https://picsum.photos/430/200"),
-    const CauseItem(
-        title: 'Please Help Refugees',
-        progress: 0.85,
-        toGo: '\$7,458 To Go',
-        imgLink: "https://picsum.photos/440/200"),
-    const CauseItem(
-        title: 'Please Help Refugees',
-        progress: 0.85,
-        toGo: '\$7,458 To Go',
-        imgLink: "https://picsum.photos/450/200"),
-    // Add more items if necessary
-  ];
+  final CauseDetailsViewModel viewModel;
 
-  CauseListCarousel({super.key, required this.controller});
+  CauseListCarousel(
+      {super.key, required this.controller, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-      carouselController: controller, // Assign the controller here
-      options: CarouselOptions(
-        autoPlay: true,
-        enlargeCenterPage: false,
-        viewportFraction:
-            getValueForScreenType(context: context, mobile: 1, desktop: .35),
-        aspectRatio:
-            getValueForScreenType(context: context, mobile: 1, desktop: 2),
-        initialPage: 1,
-        autoPlayInterval: const Duration(seconds: 5),
-        enableInfiniteScroll: true,
-        scrollPhysics: const PageScrollPhysics(), // to enable snapping
-      ),
-      items: _items
-          .map((item) => Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: getValueForScreenType(
-                        context: context,
-                        mobile: MediaQuery.of(context).size.width * 0.9,
-                        desktop: MediaQuery.of(context).size.width * 0.25),
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: item,
-                  );
-                },
-              ))
-          .toList(),
-    );
+    return FutureBuilder(
+        future: viewModel.getArticlesData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container();
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            final articleData = snapshot.data!.data!;
+            return CarouselSlider(
+              carouselController: controller, // Assign the controller here
+              options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: false,
+                viewportFraction: getValueForScreenType(
+                    context: context, mobile: 1, desktop: .35),
+                aspectRatio: getValueForScreenType(
+                    context: context, mobile: 1, desktop: 2),
+                initialPage: 1,
+                autoPlayInterval: const Duration(seconds: 5),
+                enableInfiniteScroll: true,
+                scrollPhysics: const PageScrollPhysics(), // to enable snapping
+              ),
+              items: List.generate(
+                  articleData.length,
+                  (index) => CauseItem(
+                        title: articleData[index].attributes!.title!,
+                        imgLink: articleData[index].attributes!.imageLink!,
+                        description: articleData[index]
+                            .attributes!
+                            .descriptionBlocks!
+                            .first
+                            .children!
+                            .first
+                            .text!,
+                      )),
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 }
 
 class CauseItem extends StatelessWidget {
   final String title;
-  final double progress;
-  final String toGo;
   final String imgLink;
+  final String description;
 
   const CauseItem(
       {Key? key,
       required this.title,
-      required this.progress,
-      required this.toGo,
-      required this.imgLink})
+      required this.imgLink,
+      required this.description})
       : super(key: key);
 
   @override
@@ -200,7 +184,7 @@ class CauseItem extends StatelessWidget {
           ),
           verticalSpace(10),
           Text(
-            faker.lorem.sentences(5).join(" "),
+            description,
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
             style: ktsBodyRegular.copyWith(color: kcMediumGrey),

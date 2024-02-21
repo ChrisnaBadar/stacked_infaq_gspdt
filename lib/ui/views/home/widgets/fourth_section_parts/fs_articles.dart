@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/common/ui_helpers.dart';
+import 'package:infaq/ui/views/home/home_viewmodel.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class FsArticles extends StatefulWidget {
-  const FsArticles({super.key});
+  final HomeViewModel viewModel;
+  const FsArticles({super.key, required this.viewModel});
 
   @override
   State<FsArticles> createState() => _FsArticlesState();
@@ -64,6 +66,7 @@ class _FsArticlesState extends State<FsArticles> {
           ),
           CauseListCarousel(
             controller: _controller,
+            viewModel: widget.viewModel,
           ),
         ],
       ),
@@ -73,39 +76,46 @@ class _FsArticlesState extends State<FsArticles> {
 
 class CauseListCarousel extends StatelessWidget {
   final CarouselController controller;
-  final List<Widget> _items = [
-    const CauseItem(
-        title: 'Send Food To Middle East',
-        progress: 0.82,
-        toGo: '\$21,444 To Go',
-        imgLink: "https://picsum.photos/410/200"),
-    const CauseItem(
-        title: 'Drought And Hunger',
-        progress: 0.03,
-        toGo: '\$96,312 To Go',
-        imgLink: "https://picsum.photos/420/200"),
-    const CauseItem(
-        title: 'More Plants Needed',
-        progress: 0.73,
-        toGo: '\$21,313 To Go',
-        imgLink: "https://picsum.photos/430/200"),
-    const CauseItem(
-        title: 'Please Help Refugees',
-        progress: 0.85,
-        toGo: '\$7,458 To Go',
-        imgLink: "https://picsum.photos/440/200"),
-    const CauseItem(
-        title: 'Please Help Refugees',
-        progress: 0.85,
-        toGo: '\$7,458 To Go',
-        imgLink: "https://picsum.photos/450/200"),
-    // Add more items if necessary
-  ];
+  final HomeViewModel viewModel;
 
-  CauseListCarousel({super.key, required this.controller});
+  const CauseListCarousel(
+      {super.key, required this.controller, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _items = [
+      CauseItem(
+          title: 'Send Food To Middle East',
+          progress: 0.82,
+          toGo: '\$21,444 To Go',
+          viewModel: viewModel,
+          imgLink: "https://picsum.photos/410/200"),
+      CauseItem(
+          title: 'Drought And Hunger',
+          progress: 0.03,
+          toGo: '\$96,312 To Go',
+          viewModel: viewModel,
+          imgLink: "https://picsum.photos/420/200"),
+      CauseItem(
+          title: 'More Plants Needed',
+          progress: 0.73,
+          toGo: '\$21,313 To Go',
+          viewModel: viewModel,
+          imgLink: "https://picsum.photos/430/200"),
+      CauseItem(
+          title: 'Please Help Refugees',
+          progress: 0.85,
+          toGo: '\$7,458 To Go',
+          viewModel: viewModel,
+          imgLink: "https://picsum.photos/440/200"),
+      CauseItem(
+          title: 'Please Help Refugees',
+          progress: 0.85,
+          toGo: '\$7,458 To Go',
+          viewModel: viewModel,
+          imgLink: "https://picsum.photos/450/200"),
+      // Add more items if necessary
+    ];
     return CarouselSlider(
       carouselController: controller, // Assign the controller here
       options: CarouselOptions(
@@ -143,13 +153,15 @@ class CauseItem extends StatelessWidget {
   final double progress;
   final String toGo;
   final String imgLink;
+  final HomeViewModel viewModel;
 
   const CauseItem(
       {Key? key,
       required this.title,
       required this.progress,
       required this.toGo,
-      required this.imgLink})
+      required this.imgLink,
+      required this.viewModel})
       : super(key: key);
 
   @override

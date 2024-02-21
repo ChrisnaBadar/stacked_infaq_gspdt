@@ -5,8 +5,8 @@ import 'package:infaq/ui/common/app_shared_style.dart';
 class ThemedButton extends StatelessWidget {
   final Function()? onPressed;
   final String buttonText;
-  bool reverse;
-  ThemedButton(
+  final bool reverse;
+  const ThemedButton(
       {super.key,
       required this.onPressed,
       required this.buttonText,

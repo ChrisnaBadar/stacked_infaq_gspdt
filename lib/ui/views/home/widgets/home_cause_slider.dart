@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
-import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/views/home/home_viewmodel.dart';
 import 'package:infaq/ui/widgets/themed_button.dart';
@@ -88,32 +87,32 @@ class CauseListCarousel extends StatelessWidget {
         progress: 0.82,
         toGo: '\$21,444 To Go',
         imgLink: "https://picsum.photos/301/300",
-        onTap: () => viewModel.toCauseDetailsView(),
+        onTap: () => viewModel.toCauseDetailsView(causeId: '1'),
       ),
       CauseItem(
           title: 'Drought And Hunger',
           progress: 0.03,
           toGo: '\$96,312 To Go',
           imgLink: "https://picsum.photos/302/300",
-          onTap: () => viewModel.toCauseDetailsView()),
+          onTap: () => viewModel.toCauseDetailsView(causeId: '1')),
       CauseItem(
           title: 'More Plants Needed',
           progress: 0.73,
           toGo: '\$21,313 To Go',
           imgLink: "https://picsum.photos/303/300",
-          onTap: () => viewModel.toCauseDetailsView()),
+          onTap: () => viewModel.toCauseDetailsView(causeId: '1')),
       CauseItem(
           title: 'Please Help Refugees',
           progress: 0.85,
           toGo: '\$7,458 To Go',
           imgLink: "https://picsum.photos/304/300",
-          onTap: () => viewModel.toCauseDetailsView()),
+          onTap: () => viewModel.toCauseDetailsView(causeId: '1')),
       CauseItem(
           title: 'Please Help Refugees',
           progress: 0.85,
           toGo: '\$7,458 To Go',
           imgLink: "https://picsum.photos/305/300",
-          onTap: () => viewModel.toCauseDetailsView()),
+          onTap: () => viewModel.toCauseDetailsView(causeId: '1')),
       // Add more items if necessary
     ];
     return CarouselSlider(

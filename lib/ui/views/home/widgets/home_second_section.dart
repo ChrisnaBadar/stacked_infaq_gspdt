@@ -1,16 +1,58 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:infaq/models/fundraises_list_model.dart';
 import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/common/ui_helpers.dart';
+import 'package:infaq/ui/views/home/home_viewmodel.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:intl/intl.dart';
 
 class HomeSecondSection extends StatelessWidget {
-  const HomeSecondSection({super.key});
+  final HomeViewModel viewModel;
+  final FundraisesListModel? fundraisesListModel;
+  const HomeSecondSection(
+      {super.key, required this.viewModel, required this.fundraisesListModel});
 
   @override
   Widget build(BuildContext context) {
+    FundraisesListModelDatum featuredData = fundraisesListModel!.data!
+        .where((el) => el.attributes!.urgentCause == true)
+        .toList()
+        .first;
+    var targetDonation = featuredData.attributes!.targetDonation;
+    var collectedDonation = featuredData.attributes!.donations!.data!
+        .where((e) => e.attributes!.donationStatus! == DonationStatus.DITERIMA)
+        .map((e) => int.parse(e.attributes!.nominal!))
+        .reduce((v, t) => v + t);
+
+    Map<String, dynamic> dataList = {
+      "img":
+          "https://api.amala-api.online${featuredData.attributes!.mainImage!.data!.attributes!.url!}",
+      "title":
+          featuredData.attributes!.title!, // Assuming title is available here
+      "description":
+          featuredData.attributes!.description!.first.children!.first.text,
+      "targetDonation": NumberFormat.currency(locale: "id_ID", symbol: "Rp.")
+          .format(int.parse(targetDonation!))
+          .substring(
+              0,
+              NumberFormat.currency(locale: "id_ID", symbol: "Rp.")
+                      .format(int.parse(targetDonation))
+                      .length -
+                  3),
+      "collectedDonation": NumberFormat.currency(locale: "id_ID", symbol: "Rp.")
+          .format(collectedDonation)
+          .substring(
+              0,
+              NumberFormat.currency(locale: "id_ID", symbol: "Rp.")
+                      .format(collectedDonation)
+                      .length -
+                  3),
+      "percentage": collectedDonation / int.parse(targetDonation),
+      "causeId": featuredData.id.toString()
+    };
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: ScreenTypeLayout.builder(
@@ -20,11 +62,14 @@ class HomeSecondSection extends StatelessWidget {
             Expanded(child: _aboutUs(context)),
 
             //Urgent Cause
-            Expanded(flex: 2, child: _urgentCause(context))
+            Expanded(flex: 2, child: _urgentCause(context, dataList, viewModel))
           ],
         ),
         mobile: (_) => Column(
-          children: [_aboutUs(context), _urgentCause(context)],
+          children: [
+            _aboutUs(context),
+            _urgentCause(context, dataList, viewModel)
+          ],
         ),
       ),
     );
@@ -111,7 +156,8 @@ Widget _aboutUs(BuildContext context) {
   );
 }
 
-Widget _urgentCause(BuildContext context) {
+Widget _urgentCause(BuildContext context, Map<String, dynamic> dataList,
+    HomeViewModel viewModel) {
   return Padding(
     padding: getValueForScreenType(
         context: context,
@@ -124,7 +170,7 @@ Widget _urgentCause(BuildContext context) {
       child: Stack(
         children: [
           Image.network(
-            "https://picsum.photos/400/200",
+            dataList['img'],
             width: double.infinity,
             fit: BoxFit.cover,
             loadingBuilder: (BuildContext context, Widget child,
@@ -160,7 +206,7 @@ Widget _urgentCause(BuildContext context) {
 
                 //who are we
                 Text(
-                  faker.lorem.words(4).join(" "),
+                  dataList['title'],
                   style: ktsBodyLarge.copyWith(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
@@ -171,7 +217,7 @@ Widget _urgentCause(BuildContext context) {
 
                 //description
                 Text(
-                  faker.lorem.sentences(10).join(" "),
+                  dataList['description'],
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
                   style: ktsBodyRegular.copyWith(color: kcWhite),
@@ -180,7 +226,11 @@ Widget _urgentCause(BuildContext context) {
 
                 //learn more
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      print(dataList['causeId']);
+                      viewModel.toCauseDetailsView(
+                          causeId: dataList['causeId']);
+                    },
                     child: Text(
                       "Learn More",
                       style: ktsBodyRegular.copyWith(color: kcWhite),
@@ -188,7 +238,7 @@ Widget _urgentCause(BuildContext context) {
                 verticalSpace(10),
                 LinearPercentIndicator(
                   lineHeight: 5,
-                  percent: .5,
+                  percent: dataList['percentage'],
                   progressColor: kcLightGrey,
                   backgroundColor: kcDarkGreyColor,
                 ),
@@ -196,11 +246,11 @@ Widget _urgentCause(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Rp. x.xxx.xxx,- Collected",
+                      "${dataList['collectedDonation']} Collected",
                       style: ktsBodyRegular.copyWith(color: kcWhite),
                     ),
                     Text(
-                      "from RP. xx.xxx.xxx,-",
+                      "from ${dataList['targetDonation']}",
                       style: ktsBodyRegular.copyWith(color: kcWhite),
                     ),
                   ],
@@ -208,10 +258,16 @@ Widget _urgentCause(BuildContext context) {
                 verticalSpace(10),
                 MaterialButton(
                   onPressed: () {
-                    // Add your onPressed code here
+                    viewModel.showDonateDialog(
+                        causeTitle: dataList['title'],
+                        description: dataList['description']);
                   },
                   color: kcVeryLightGrey,
                   textColor: kcPrimaryColorDark,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        8.0), // Adjust the corner radius here
+                  ),
                   child: SizedBox(
                       width: 200,
                       height: 25,
@@ -221,10 +277,6 @@ Widget _urgentCause(BuildContext context) {
                         style: ktsBodyRegular.copyWith(
                             fontWeight: FontWeight.w700),
                       )),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        8.0), // Adjust the corner radius here
-                  ),
                 )
               ],
             ),

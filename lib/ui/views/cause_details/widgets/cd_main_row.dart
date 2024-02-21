@@ -1,16 +1,24 @@
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:infaq/models/fundraise_model.dart';
 import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_constants.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/common/ui_helpers.dart';
+import 'package:infaq/ui/views/cause_details/cause_details_viewmodel.dart';
+import 'package:infaq/ui/views/cause_details/widgets/cd_donation_progress.dart';
+import 'package:infaq/ui/views/cause_details/widgets/lang_switch.dart';
 import 'package:infaq/ui/views/cause_details/widgets/secondary_parts/cdsp_articles.dart';
 import 'package:infaq/ui/widgets/themed_button.dart';
+import 'package:infaq/ui/widgets/themed_image.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class CauseDetailsMainRow extends StatelessWidget {
-  const CauseDetailsMainRow({super.key});
+  final FundraiseModel? fundraiseModel;
+  final CauseDetailsViewModel viewModel;
+  const CauseDetailsMainRow(
+      {super.key, required this.fundraiseModel, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +30,13 @@ class CauseDetailsMainRow extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //date and tags
-            dateNtags(),
+            dateNtags(fundraiseModel!),
 
             //title
-            causeTitle()
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: causeTitle(),
+            )
           ],
         ),
       ),
@@ -36,11 +47,26 @@ class CauseDetailsMainRow extends StatelessWidget {
       )
     ];
     List<Widget> columnChildren = [
-      dateNtags(),
+      dateNtags(fundraiseModel!),
       causeTitle(),
       verticalSpace(10),
       SizedBox(width: kdDesktopMaxContentWidth, child: donateButton())
     ];
+
+    List<TextSpan> buildTextSpans(List<Description> descriptions) {
+      List<TextSpan> spans = [];
+      for (var description in descriptions) {
+        for (var child in description.children ?? []) {
+          if (child.text?.isNotEmpty == true) {
+            spans.add(TextSpan(text: child.text + '\n\n'));
+          } else {
+            spans.add(TextSpan(text: '\n')); // Add a new line for empty text
+          }
+        }
+      }
+      return spans;
+    }
+
     //START
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -48,13 +74,12 @@ class CauseDetailsMainRow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //main image
-          Placeholder(
-            child: Image.network(
-              "https://picsum.photos/400/200",
-              fit: BoxFit.cover,
-              width: double.infinity,
-            ),
+          ThemedImage(
+            imgString: fundraiseModel!.data!.attributes!.imageLink!,
+            width: double.infinity,
           ),
+
+          LangSwitch(),
 
           //Row of title and button
           Padding(
@@ -72,7 +97,16 @@ class CauseDetailsMainRow extends StatelessWidget {
           //percentage progress
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: LinearPercentIndicator(),
+            child: LinearPercentIndicator(
+              percent: (fundraiseModel!.data!.attributes!.donations!.data!
+                      .where((element) =>
+                          element.attributes!.donationStatus == "Diterima")
+                      .map((e) => int.parse(e.attributes!.nominal!))
+                      .reduce((value, element) => value + element)) /
+                  double.parse(
+                      fundraiseModel!.data!.attributes!.targetDonation!),
+              progressColor: kcPrimaryColorDark,
+            ),
           ),
 
           //donation progress and pdf report form
@@ -81,19 +115,28 @@ class CauseDetailsMainRow extends StatelessWidget {
             child: ScreenTypeLayout.builder(
               desktop: (_) => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [donationProgress(), pdfReport()],
+                children: [
+                  CauseDetailsDonationProgress(
+                    fundraiseModel: fundraiseModel!,
+                  ),
+                  pdfReport()
+                ],
               ),
               mobile: (_) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [donationProgress(), pdfReport()],
+                children: [
+                  CauseDetailsDonationProgress(fundraiseModel: fundraiseModel!),
+                  pdfReport()
+                ],
               ),
             ),
           ),
 
           //description
-          Text(
-            faker.lorem.sentences(10).join(" "),
-            style: ktsBodyRegular,
+          Text.rich(
+            TextSpan(
+                children: buildTextSpans(
+                    fundraiseModel!.data!.attributes!.description!)),
           ),
 
           const Divider(),
@@ -111,7 +154,7 @@ class CauseDetailsMainRow extends StatelessWidget {
             height: 500,
             child: ListView(
               children: List.generate(
-                  5,
+                  fundraiseModel!.data!.attributes!.donations!.data!.length,
                   (index) => SizedBox(
                         width: kdDesktopMaxContentWidth * .5,
                         child: ListTile(
@@ -123,16 +166,43 @@ class CauseDetailsMainRow extends StatelessWidget {
                             ),
                           ),
                           title: Text(
-                            faker.person.name(),
+                            fundraiseModel!.data!.attributes!.donations!
+                                .data![index].attributes!.nama!,
                             style: ktsBodyLarge.copyWith(
                                 fontSize: 17, fontWeight: FontWeight.w900),
                           ),
                           subtitle: Text.rich(TextSpan(children: [
                             TextSpan(
-                                text: "Rp. 2.000,-\n",
+                                text: NumberFormat.currency(
+                                        locale: "id_ID", symbol: "Rp. ")
+                                    .format(int.parse(fundraiseModel!
+                                        .data!
+                                        .attributes!
+                                        .donations!
+                                        .data![index]
+                                        .attributes!
+                                        .nominal!))
+                                    .substring(
+                                        0,
+                                        NumberFormat.currency(
+                                                    locale: "id_ID",
+                                                    symbol: "Rp. ")
+                                                .format(int.parse(
+                                                    fundraiseModel!
+                                                        .data!
+                                                        .attributes!
+                                                        .donations!
+                                                        .data![index]
+                                                        .attributes!
+                                                        .nominal!))
+                                                .length -
+                                            3),
                                 style: ktsBodyRegular.copyWith(
                                     fontWeight: FontWeight.w800, fontSize: 20)),
-                            TextSpan(text: faker.lorem.sentences(3).join(" ")),
+                            TextSpan(text: "\n"),
+                            TextSpan(
+                                text: fundraiseModel!.data!.attributes!
+                                    .donations!.data![index].attributes!.pesan),
                             TextSpan(text: "\n")
                           ])),
                         ),
@@ -143,7 +213,9 @@ class CauseDetailsMainRow extends StatelessWidget {
           verticalSpace(20),
 
           //laporan alur dana
-          CauseDetailsArticles(),
+          CauseDetailsArticles(
+            viewModel: viewModel,
+          ),
         ],
       ),
     );
@@ -156,29 +228,27 @@ class CauseDetailsMainRow extends StatelessWidget {
         label: const Text('Download PDF Report'));
   }
 
-  Text donationProgress() {
-    return const Text.rich(TextSpan(children: [
-      TextSpan(text: "Rp. xx.xxx.xxx,- "),
-      TextSpan(text: "From total of Rp. xx.xxx.xxx,- ")
-    ]));
-  }
-
   ThemedButton donateButton() {
     return ThemedButton(
-      onPressed: () {},
+      onPressed: () {
+        viewModel.showDonateDialog(
+            causeTitle: fundraiseModel!.data!.attributes!.title!,
+            description: fundraiseModel!
+                .data!.attributes!.description!.first.children!.first.text!);
+      },
       buttonText: 'DONATE',
     );
   }
 
   Text causeTitle() {
     return Text(
-      faker.lorem.sentence(),
+      fundraiseModel!.data!.attributes!.title!,
       maxLines: 2,
       style: ktsBodyLarge.copyWith(fontSize: 20, fontWeight: FontWeight.w900),
     );
   }
 
-  Row dateNtags() {
+  Row dateNtags(FundraiseModel fundraiseModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -189,10 +259,7 @@ class CauseDetailsMainRow extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        Text(
-          "00 Januari 2024",
-          style: ktsBodyRegular.copyWith(fontSize: 12),
-        ),
+        dateStart(fundraiseModel),
         const SizedBox(
           width: 30,
         ),
@@ -203,23 +270,31 @@ class CauseDetailsMainRow extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        Text.rich(
-          TextSpan(
-            children: List.generate(
-                3,
-                (index) => TextSpan(
-                      text: 'Tags #${index + 1}',
-                      style: ktsBodyRegular, // Style as needed
-                      children: [
-                        if (index < 2)
-                          const TextSpan(
-                              text:
-                                  ', '), // Add comma and space except after the last tag
-                      ],
-                    )),
-          ),
-        )
+        // Text.rich(
+        //   TextSpan(
+        //     children: List.generate(
+        //         3,
+        //         (index) => TextSpan(
+        //               text: 'Tags #${index + 1}',
+        //               style: ktsBodyRegular, // Style as needed
+        //               children: [
+        //                 if (index < 2)
+        //                   const TextSpan(
+        //                       text:
+        //                           ', '), // Add comma and space except after the last tag
+        //               ],
+        //             )),
+        //   ),
+        // )
       ],
+    );
+  }
+
+  Text dateStart(FundraiseModel fundraiseModel) {
+    return Text(
+      DateFormat("dd MMMM yyyy")
+          .format(fundraiseModel.data!.attributes!.dateStart!),
+      style: ktsBodyRegular.copyWith(fontSize: 12),
     );
   }
 }

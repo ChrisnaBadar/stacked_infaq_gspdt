@@ -37,13 +37,18 @@ class HomeViewDesktop extends ViewModelWidget<HomeViewModel> {
                     fundraisesListModel: fundraisesListMode,
                   ),
                   verticalSpace(20),
-                  HomeSecondSection(),
+                  HomeSecondSection(
+                    viewModel: viewModel,
+                    fundraisesListModel: fundraisesListMode,
+                  ),
                   verticalSpace(20),
                   HomeCauseSlider(
                     viewModel: viewModel,
                   ),
                   HomeThirdSection(),
-                  HomeFourthSection()
+                  HomeFourthSection(
+                    viewModel: viewModel,
+                  )
 
                   //
                 ],

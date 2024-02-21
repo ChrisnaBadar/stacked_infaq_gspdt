@@ -76,6 +76,9 @@ class DonateDialog extends StackedView<DonateDialogModel> with $DonateDialog {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  SizedBox(
+                    height: 25,
+                  ),
                   Text(
                     "You are donating to: ${request.title}",
                     style: ktsBodyLarge.copyWith(fontWeight: FontWeight.w800),

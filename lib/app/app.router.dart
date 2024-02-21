@@ -5,27 +5,28 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i8;
-import 'package:stacked/stacked.dart' as _i7;
-import 'package:stacked_services/stacked_services.dart' as _i6;
+import 'package:flutter/material.dart' as _i9;
+import 'package:stacked/stacked.dart' as _i8;
+import 'package:stacked_services/stacked_services.dart' as _i7;
 
-import '../ui/views/cause_details/cause_details_view.dart' as _i4;
-import '../ui/views/donate_page/donate_page_view.dart' as _i5;
+import '../ui/views/cause_details/cause_details_view.dart' as _i5;
+import '../ui/views/donate_page/donate_page_view.dart' as _i6;
 import '../ui/views/home/home_view.dart' as _i3;
 import '../ui/views/main_layout/main_layout_view.dart' as _i1;
+import '../ui/views/routing_test/routing_test_view.dart' as _i4;
 import '../ui/views/unknown/unknown_view.dart' as _i2;
 
 final stackedRouter =
-    StackedRouterWeb(navigatorKey: _i6.StackedService.navigatorKey);
+    StackedRouterWeb(navigatorKey: _i7.StackedService.navigatorKey);
 
-class StackedRouterWeb extends _i7.RootStackRouter {
-  StackedRouterWeb({_i8.GlobalKey<_i8.NavigatorState>? navigatorKey})
+class StackedRouterWeb extends _i8.RootStackRouter {
+  StackedRouterWeb({_i9.GlobalKey<_i9.NavigatorState>? navigatorKey})
       : super(navigatorKey);
 
   @override
-  final Map<String, _i7.PageFactory> pagesMap = {
+  final Map<String, _i8.PageFactory> pagesMap = {
     MainLayoutViewRoute.name: (routeData) {
-      return _i7.CustomPage<dynamic>(
+      return _i8.CustomPage<dynamic>(
         routeData: routeData,
         child: const _i1.MainLayoutView(),
         opaque: true,
@@ -33,7 +34,7 @@ class StackedRouterWeb extends _i7.RootStackRouter {
       );
     },
     UnknownViewRoute.name: (routeData) {
-      return _i7.CustomPage<dynamic>(
+      return _i8.CustomPage<dynamic>(
         routeData: routeData,
         child: const _i2.UnknownView(),
         opaque: true,
@@ -41,9 +42,17 @@ class StackedRouterWeb extends _i7.RootStackRouter {
       );
     },
     HomeViewRoute.name: (routeData) {
-      return _i7.CustomPage<dynamic>(
+      return _i8.CustomPage<dynamic>(
         routeData: routeData,
         child: const _i3.HomeView(),
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    RoutingTestViewRoute.name: (routeData) {
+      return _i8.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i4.RoutingTestView(),
         opaque: true,
         barrierDismissible: false,
       );
@@ -53,9 +62,9 @@ class StackedRouterWeb extends _i7.RootStackRouter {
       final args = routeData.argsAs<CauseDetailsViewArgs>(
           orElse: () =>
               CauseDetailsViewArgs(causeId: pathParams.getString('causeId')));
-      return _i7.CustomPage<dynamic>(
+      return _i8.CustomPage<dynamic>(
         routeData: routeData,
-        child: _i4.CauseDetailsView(
+        child: _i5.CauseDetailsView(
           key: args.key,
           causeId: args.causeId,
         ),
@@ -68,9 +77,9 @@ class StackedRouterWeb extends _i7.RootStackRouter {
       final args = routeData.argsAs<DonatePageViewArgs>(
           orElse: () =>
               DonatePageViewArgs(causeId: pathParams.getString('causeId')));
-      return _i7.CustomPage<dynamic>(
+      return _i8.CustomPage<dynamic>(
         routeData: routeData,
-        child: _i5.DonatePageView(
+        child: _i6.DonatePageView(
           key: args.key,
           causeId: args.causeId,
         ),
@@ -81,33 +90,38 @@ class StackedRouterWeb extends _i7.RootStackRouter {
   };
 
   @override
-  List<_i7.RouteConfig> get routes => [
-        _i7.RouteConfig(
+  List<_i8.RouteConfig> get routes => [
+        _i8.RouteConfig(
           MainLayoutViewRoute.name,
           path: '/',
           children: [
-            _i7.RouteConfig(
+            _i8.RouteConfig(
               HomeViewRoute.name,
               path: '',
               parent: MainLayoutViewRoute.name,
             ),
-            _i7.RouteConfig(
+            _i8.RouteConfig(
+              RoutingTestViewRoute.name,
+              path: 'routing-test',
+              parent: MainLayoutViewRoute.name,
+            ),
+            _i8.RouteConfig(
               CauseDetailsViewRoute.name,
               path: 'cause-details/:causeId',
               parent: MainLayoutViewRoute.name,
             ),
-            _i7.RouteConfig(
+            _i8.RouteConfig(
               DonatePageViewRoute.name,
               path: 'donate-page/:causeId',
               parent: MainLayoutViewRoute.name,
             ),
           ],
         ),
-        _i7.RouteConfig(
+        _i8.RouteConfig(
           UnknownViewRoute.name,
           path: '/404',
         ),
-        _i7.RouteConfig(
+        _i8.RouteConfig(
           '*#redirect',
           path: '*',
           redirectTo: '/404',
@@ -118,8 +132,8 @@ class StackedRouterWeb extends _i7.RootStackRouter {
 
 /// generated route for
 /// [_i1.MainLayoutView]
-class MainLayoutViewRoute extends _i7.PageRouteInfo<void> {
-  const MainLayoutViewRoute({List<_i7.PageRouteInfo>? children})
+class MainLayoutViewRoute extends _i8.PageRouteInfo<void> {
+  const MainLayoutViewRoute({List<_i8.PageRouteInfo>? children})
       : super(
           MainLayoutViewRoute.name,
           path: '/',
@@ -131,7 +145,7 @@ class MainLayoutViewRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.UnknownView]
-class UnknownViewRoute extends _i7.PageRouteInfo<void> {
+class UnknownViewRoute extends _i8.PageRouteInfo<void> {
   const UnknownViewRoute()
       : super(
           UnknownViewRoute.name,
@@ -143,7 +157,7 @@ class UnknownViewRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.HomeView]
-class HomeViewRoute extends _i7.PageRouteInfo<void> {
+class HomeViewRoute extends _i8.PageRouteInfo<void> {
   const HomeViewRoute()
       : super(
           HomeViewRoute.name,
@@ -154,10 +168,22 @@ class HomeViewRoute extends _i7.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.CauseDetailsView]
-class CauseDetailsViewRoute extends _i7.PageRouteInfo<CauseDetailsViewArgs> {
+/// [_i4.RoutingTestView]
+class RoutingTestViewRoute extends _i8.PageRouteInfo<void> {
+  const RoutingTestViewRoute()
+      : super(
+          RoutingTestViewRoute.name,
+          path: 'routing-test',
+        );
+
+  static const String name = 'RoutingTestView';
+}
+
+/// generated route for
+/// [_i5.CauseDetailsView]
+class CauseDetailsViewRoute extends _i8.PageRouteInfo<CauseDetailsViewArgs> {
   CauseDetailsViewRoute({
-    _i8.Key? key,
+    _i9.Key? key,
     required String causeId,
   }) : super(
           CauseDetailsViewRoute.name,
@@ -178,7 +204,7 @@ class CauseDetailsViewArgs {
     required this.causeId,
   });
 
-  final _i8.Key? key;
+  final _i9.Key? key;
 
   final String causeId;
 
@@ -189,10 +215,10 @@ class CauseDetailsViewArgs {
 }
 
 /// generated route for
-/// [_i5.DonatePageView]
-class DonatePageViewRoute extends _i7.PageRouteInfo<DonatePageViewArgs> {
+/// [_i6.DonatePageView]
+class DonatePageViewRoute extends _i8.PageRouteInfo<DonatePageViewArgs> {
   DonatePageViewRoute({
-    _i8.Key? key,
+    _i9.Key? key,
     required String causeId,
   }) : super(
           DonatePageViewRoute.name,
@@ -213,7 +239,7 @@ class DonatePageViewArgs {
     required this.causeId,
   });
 
-  final _i8.Key? key;
+  final _i9.Key? key;
 
   final String causeId;
 
@@ -223,9 +249,9 @@ class DonatePageViewArgs {
   }
 }
 
-extension RouterStateExtension on _i6.RouterService {
+extension RouterStateExtension on _i7.RouterService {
   Future<dynamic> navigateToMainLayoutView(
-      {void Function(_i7.NavigationFailure)? onFailure}) async {
+      {void Function(_i8.NavigationFailure)? onFailure}) async {
     return navigateTo(
       const MainLayoutViewRoute(),
       onFailure: onFailure,
@@ -233,7 +259,7 @@ extension RouterStateExtension on _i6.RouterService {
   }
 
   Future<dynamic> navigateToUnknownView(
-      {void Function(_i7.NavigationFailure)? onFailure}) async {
+      {void Function(_i8.NavigationFailure)? onFailure}) async {
     return navigateTo(
       const UnknownViewRoute(),
       onFailure: onFailure,
@@ -241,17 +267,25 @@ extension RouterStateExtension on _i6.RouterService {
   }
 
   Future<dynamic> navigateToHomeView(
-      {void Function(_i7.NavigationFailure)? onFailure}) async {
+      {void Function(_i8.NavigationFailure)? onFailure}) async {
     return navigateTo(
       const HomeViewRoute(),
       onFailure: onFailure,
     );
   }
 
+  Future<dynamic> navigateToRoutingTestView(
+      {void Function(_i8.NavigationFailure)? onFailure}) async {
+    return navigateTo(
+      const RoutingTestViewRoute(),
+      onFailure: onFailure,
+    );
+  }
+
   Future<dynamic> navigateToCauseDetailsView({
-    _i8.Key? key,
+    _i9.Key? key,
     required String causeId,
-    void Function(_i7.NavigationFailure)? onFailure,
+    void Function(_i8.NavigationFailure)? onFailure,
   }) async {
     return navigateTo(
       CauseDetailsViewRoute(
@@ -263,9 +297,9 @@ extension RouterStateExtension on _i6.RouterService {
   }
 
   Future<dynamic> navigateToDonatePageView({
-    _i8.Key? key,
+    _i9.Key? key,
     required String causeId,
-    void Function(_i7.NavigationFailure)? onFailure,
+    void Function(_i8.NavigationFailure)? onFailure,
   }) async {
     return navigateTo(
       DonatePageViewRoute(
@@ -277,7 +311,7 @@ extension RouterStateExtension on _i6.RouterService {
   }
 
   Future<dynamic> replaceWithMainLayoutView(
-      {void Function(_i7.NavigationFailure)? onFailure}) async {
+      {void Function(_i8.NavigationFailure)? onFailure}) async {
     return replaceWith(
       const MainLayoutViewRoute(),
       onFailure: onFailure,
@@ -285,7 +319,7 @@ extension RouterStateExtension on _i6.RouterService {
   }
 
   Future<dynamic> replaceWithUnknownView(
-      {void Function(_i7.NavigationFailure)? onFailure}) async {
+      {void Function(_i8.NavigationFailure)? onFailure}) async {
     return replaceWith(
       const UnknownViewRoute(),
       onFailure: onFailure,
@@ -293,17 +327,25 @@ extension RouterStateExtension on _i6.RouterService {
   }
 
   Future<dynamic> replaceWithHomeView(
-      {void Function(_i7.NavigationFailure)? onFailure}) async {
+      {void Function(_i8.NavigationFailure)? onFailure}) async {
     return replaceWith(
       const HomeViewRoute(),
       onFailure: onFailure,
     );
   }
 
+  Future<dynamic> replaceWithRoutingTestView(
+      {void Function(_i8.NavigationFailure)? onFailure}) async {
+    return replaceWith(
+      const RoutingTestViewRoute(),
+      onFailure: onFailure,
+    );
+  }
+
   Future<dynamic> replaceWithCauseDetailsView({
-    _i8.Key? key,
+    _i9.Key? key,
     required String causeId,
-    void Function(_i7.NavigationFailure)? onFailure,
+    void Function(_i8.NavigationFailure)? onFailure,
   }) async {
     return replaceWith(
       CauseDetailsViewRoute(
@@ -315,9 +357,9 @@ extension RouterStateExtension on _i6.RouterService {
   }
 
   Future<dynamic> replaceWithDonatePageView({
-    _i8.Key? key,
+    _i9.Key? key,
     required String causeId,
-    void Function(_i7.NavigationFailure)? onFailure,
+    void Function(_i8.NavigationFailure)? onFailure,
   }) async {
     return replaceWith(
       DonatePageViewRoute(

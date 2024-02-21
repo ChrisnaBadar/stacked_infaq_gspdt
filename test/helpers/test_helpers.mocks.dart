@@ -592,11 +592,13 @@ class MockHttpService extends _i1.Mock implements _i11.HttpService {
       ) as _i4.Future<_i12.FundraisesListModel?>);
 
   @override
-  _i4.Future<_i13.FundraiseModel?> getSingleFundraiseData(String? id) =>
+  _i4.Future<_i13.FundraiseModel?> getSingleFundraiseData(
+          {required String? id}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getSingleFundraiseData,
-          [id],
+          [],
+          {#id: id},
         ),
         returnValue: _i4.Future<_i13.FundraiseModel?>.value(),
         returnValueForMissingStub: _i4.Future<_i13.FundraiseModel?>.value(),

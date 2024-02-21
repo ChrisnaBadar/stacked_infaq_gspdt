@@ -9,6 +9,7 @@ import 'cause_details_view.mobile.dart';
 import 'cause_details_viewmodel.dart';
 
 class CauseDetailsView extends StackedView<CauseDetailsViewModel> {
+  @pathParam
   final String causeId;
   const CauseDetailsView({super.key, @pathParam required this.causeId});
 
@@ -19,9 +20,13 @@ class CauseDetailsView extends StackedView<CauseDetailsViewModel> {
     Widget? child,
   ) {
     return ScreenTypeLayout.builder(
-      mobile: (_) => const CauseDetailsViewMobile(),
+      mobile: (_) => CauseDetailsViewMobile(
+        causeId: causeId,
+      ),
       tablet: (_) => const CauseDetailsViewTablet(),
-      desktop: (_) => const CauseDetailsViewDesktop(),
+      desktop: (_) => CauseDetailsViewDesktop(
+        causeId: causeId,
+      ),
     );
   }
 
