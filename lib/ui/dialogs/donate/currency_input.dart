@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/widgets/input_field.dart';
 import 'package:intl/intl.dart';
 
 class CurrencyInput extends StatefulWidget {
+  final TextEditingController amountController;
+
+  const CurrencyInput({super.key, required this.amountController});
   @override
   _CurrencyInputState createState() => _CurrencyInputState();
 }
 
 class _CurrencyInputState extends State<CurrencyInput> {
-  final TextEditingController amountController = TextEditingController();
   String usdAmountFormatted = "0.00"; // Store the formatted USD amount
 
   @override
   void initState() {
     super.initState();
-    amountController.addListener(() {
+    widget.amountController.addListener(() {
       convertCurrency();
     });
   }
 
   void convertCurrency() {
-    String inputText = amountController.text;
+    String inputText = widget.amountController.text;
     if (inputText.isEmpty) {
       setState(() {
         usdAmountFormatted =
@@ -60,7 +63,7 @@ class _CurrencyInputState extends State<CurrencyInput> {
                 Expanded(
                   flex: 3,
                   child: InputField(
-                    controller: amountController,
+                    controller: widget.amountController,
                     hintText: "",
                     inputFormatters: [CurrencyInputFormatter()],
                     textInputType: TextInputType.number,
@@ -74,6 +77,10 @@ class _CurrencyInputState extends State<CurrencyInput> {
                 ),
               ],
             ),
+            Text(
+              "*IDR 16.000 = USD 1.00",
+              style: ktsBodyRegular.copyWith(fontSize: 10),
+            )
 
             // ... (other widgets)
           ],
@@ -84,7 +91,7 @@ class _CurrencyInputState extends State<CurrencyInput> {
 
   @override
   void dispose() {
-    amountController.dispose();
+    widget.amountController.dispose();
     super.dispose();
   }
 }

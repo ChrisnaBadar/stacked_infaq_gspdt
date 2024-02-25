@@ -46,6 +46,7 @@ class _HomeHeaderState extends State<HomeHeader> {
     List dataList = List.generate(featuredData.length, (index) {
       var fundraiser = featuredData[index];
       return {
+        "id": fundraiser.id,
         "img":
             "https://api.amala-api.online${fundraiser.attributes!.mainImage!.data!.attributes!.url!}",
         "title":
@@ -86,7 +87,7 @@ class _HomeHeaderState extends State<HomeHeader> {
         _firstChild(dataList['img']),
 
         //info
-        _secondChild(widget.viewModel, dataList['title'],
+        _secondChild(widget.viewModel, dataList['id'], dataList['title'],
             dataList['description'], dataList['causeId'])
       ],
     );
@@ -97,8 +98,12 @@ class _HomeHeaderState extends State<HomeHeader> {
       children: [
         Expanded(flex: 2, child: _firstChild(dataList['img'])),
         Expanded(
-            child: _secondChild(widget.viewModel, dataList['title'],
-                dataList['description'], dataList['causeId']))
+            child: _secondChild(
+                widget.viewModel,
+                dataList['id'],
+                dataList['title'],
+                dataList['description'],
+                dataList['causeId']))
       ],
     );
   }
@@ -129,8 +134,8 @@ class _HomeHeaderState extends State<HomeHeader> {
     );
   }
 
-  Widget _secondChild(HomeViewModel viewModel, String title, String description,
-      String causeId) {
+  Widget _secondChild(HomeViewModel viewModel, int id, String title,
+      String description, String causeId) {
     print(title);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -241,7 +246,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                 onPressed: () {
                   // Add your onPressed code here
                   viewModel.showDonateDialog(
-                      causeTitle: title, description: description);
+                      id: id, causeTitle: title, description: description);
                 },
                 color: kcVeryLightGrey,
                 textColor: kcPrimaryColorDark,
@@ -253,7 +258,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                     width: double.infinity,
                     height: 25,
                     child: Text(
-                      'DONATE',
+                      'INFAQ',
                       textAlign: TextAlign.center,
                       style:
                           ktsBodyRegular.copyWith(fontWeight: FontWeight.w700),

@@ -37,6 +37,7 @@ class HomeViewMobile extends ViewModelWidget<HomeViewModel> {
                 ),
                 HomeCauseSlider(
                   viewModel: viewModel,
+                  fundraisesListModel: fundraisesListMode,
                 ),
                 HomeThirdSection(),
                 HomeFourthSection(

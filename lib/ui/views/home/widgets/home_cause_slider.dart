@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:infaq/models/fundraise_model.dart';
+import 'package:infaq/models/fundraises_list_model.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/views/home/home_viewmodel.dart';
 import 'package:infaq/ui/widgets/themed_button.dart';
@@ -8,7 +10,9 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 class HomeCauseSlider extends StatefulWidget {
   final HomeViewModel viewModel;
-  const HomeCauseSlider({super.key, required this.viewModel});
+  final FundraisesListModel fundraisesListModel;
+  const HomeCauseSlider(
+      {super.key, required this.viewModel, required this.fundraisesListModel});
 
   @override
   State<HomeCauseSlider> createState() => _HomeCauseSliderState();
@@ -65,6 +69,7 @@ class _HomeCauseSliderState extends State<HomeCauseSlider> {
           CauseListCarousel(
             controller: _controller,
             viewModel: widget.viewModel,
+            fundraisesListModel: widget.fundraisesListModel,
           ),
         ],
       ),
@@ -75,46 +80,30 @@ class _HomeCauseSliderState extends State<HomeCauseSlider> {
 class CauseListCarousel extends StatelessWidget {
   final CarouselController controller;
   final HomeViewModel viewModel;
+  final FundraisesListModel fundraisesListModel;
 
   CauseListCarousel(
-      {super.key, required this.controller, required this.viewModel});
+      {super.key,
+      required this.controller,
+      required this.viewModel,
+      required this.fundraisesListModel});
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _items = [
-      CauseItem(
-        title: 'Send Food To Middle East',
-        progress: 0.82,
-        toGo: '\$21,444 To Go',
-        imgLink: "https://picsum.photos/301/300",
-        onTap: () => viewModel.toCauseDetailsView(causeId: '1'),
-      ),
-      CauseItem(
-          title: 'Drought And Hunger',
-          progress: 0.03,
-          toGo: '\$96,312 To Go',
-          imgLink: "https://picsum.photos/302/300",
-          onTap: () => viewModel.toCauseDetailsView(causeId: '1')),
-      CauseItem(
-          title: 'More Plants Needed',
-          progress: 0.73,
-          toGo: '\$21,313 To Go',
-          imgLink: "https://picsum.photos/303/300",
-          onTap: () => viewModel.toCauseDetailsView(causeId: '1')),
-      CauseItem(
-          title: 'Please Help Refugees',
-          progress: 0.85,
-          toGo: '\$7,458 To Go',
-          imgLink: "https://picsum.photos/304/300",
-          onTap: () => viewModel.toCauseDetailsView(causeId: '1')),
-      CauseItem(
-          title: 'Please Help Refugees',
-          progress: 0.85,
-          toGo: '\$7,458 To Go',
-          imgLink: "https://picsum.photos/305/300",
-          onTap: () => viewModel.toCauseDetailsView(causeId: '1')),
-      // Add more items if necessary
-    ];
+    print(
+        'imageLink: ${fundraisesListModel.data!.first.attributes!.mainImage!.data!.attributes!.url!}');
+    final List<Widget> _items = List.generate(
+        5,
+        (index) => CauseItem(
+            title: fundraisesListModel.data![index].attributes!.title!,
+            description: fundraisesListModel
+                .data![index].attributes!.description![0].children![0].text!,
+            progress: 0.85,
+            toGo: '\$21,444 To Go',
+            imgLink: fundraisesListModel.data![index].attributes!.imageLink!,
+            onTap: () => viewModel.toCauseDetailsView(
+                causeId: fundraisesListModel.data![index].id.toString())));
+
     return CarouselSlider(
       carouselController: controller, // Assign the controller here
       options: CarouselOptions(
@@ -149,6 +138,7 @@ class CauseListCarousel extends StatelessWidget {
 
 class CauseItem extends StatelessWidget {
   final String title;
+  final String description;
   final double progress;
   final String toGo;
   final String imgLink;
@@ -157,6 +147,7 @@ class CauseItem extends StatelessWidget {
   const CauseItem(
       {Key? key,
       required this.title,
+      required this.description,
       required this.progress,
       required this.toGo,
       required this.imgLink,
@@ -186,7 +177,7 @@ class CauseItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: ktsBodyLarge.copyWith()),
             Text(
-              faker.lorem.sentences(5).join(" "),
+              description,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: ktsBodyRegular,

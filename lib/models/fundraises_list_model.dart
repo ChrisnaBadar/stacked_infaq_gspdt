@@ -68,9 +68,9 @@ class PurpleAttributes {
   DateTime? createdAt;
   DateTime? updatedAt;
   DateTime? publishedAt;
-  String? imageLink;
-  bool? urgentCause;
   bool? featuredCause;
+  bool? urgentCause;
+  String? imageLink;
   MainImage? mainImage;
   Donations? donations;
   FundraiseReports? fundraiseReports;
@@ -85,9 +85,9 @@ class PurpleAttributes {
     this.createdAt,
     this.updatedAt,
     this.publishedAt,
-    this.imageLink,
-    this.urgentCause,
     this.featuredCause,
+    this.urgentCause,
+    this.imageLink,
     this.mainImage,
     this.donations,
     this.fundraiseReports,
@@ -121,9 +121,9 @@ class PurpleAttributes {
         publishedAt: json["publishedAt"] == null
             ? null
             : DateTime.parse(json["publishedAt"]),
-        imageLink: json["imageLink"],
-        urgentCause: json["urgentCause"],
         featuredCause: json["featuredCause"],
+        urgentCause: json["urgentCause"],
+        imageLink: json["imageLink"],
         mainImage: json["mainImage"] == null
             ? null
             : MainImage.fromJson(json["mainImage"]),
@@ -151,9 +151,9 @@ class PurpleAttributes {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "publishedAt": publishedAt?.toIso8601String(),
-        "imageLink": imageLink,
-        "urgentCause": urgentCause,
         "featuredCause": featuredCause,
+        "urgentCause": urgentCause,
+        "imageLink": imageLink,
         "mainImage": mainImage?.toJson(),
         "donations": donations?.toJson(),
         "fundraise_reports": fundraiseReports?.toJson(),
@@ -197,14 +197,14 @@ class Description {
 class Child {
   ChildType? type;
   String? text;
-  List<Child>? children;
   bool? bold;
+  List<Child>? children;
 
   Child({
     this.type,
     this.text,
-    this.children,
     this.bold,
+    this.children,
   });
 
   factory Child.fromRawJson(String str) => Child.fromJson(json.decode(str));
@@ -214,19 +214,19 @@ class Child {
   factory Child.fromJson(Map<String, dynamic> json) => Child(
         type: childTypeValues.map[json["type"]]!,
         text: json["text"],
+        bold: json["bold"],
         children: json["children"] == null
             ? []
             : List<Child>.from(json["children"]!.map((x) => Child.fromJson(x))),
-        bold: json["bold"],
       );
 
   Map<String, dynamic> toJson() => {
         "type": childTypeValues.reverse[type],
         "text": text,
+        "bold": bold,
         "children": children == null
             ? []
             : List<dynamic>.from(children!.map((x) => x.toJson())),
-        "bold": bold,
       };
 }
 
@@ -298,7 +298,7 @@ class FluffyAttributes {
   String? nominal;
   String? kontak;
   String? pesan;
-  DonationStatus? donationStatus;
+  String? donationStatus;
   DateTime? createdAt;
   DateTime? updatedAt;
   DateTime? publishedAt;
@@ -325,7 +325,7 @@ class FluffyAttributes {
         nominal: json["nominal"],
         kontak: json["kontak"],
         pesan: json["pesan"],
-        donationStatus: donationStatusValues.map[json["donationStatus"]]!,
+        donationStatus: json["donationStatus"],
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
@@ -342,16 +342,12 @@ class FluffyAttributes {
         "nominal": nominal,
         "kontak": kontak,
         "pesan": pesan,
-        "donationStatus": donationStatusValues.reverse[donationStatus],
+        "donationStatus": donationStatus,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "publishedAt": publishedAt?.toIso8601String(),
       };
 }
-
-enum DonationStatus { DITERIMA }
-
-final donationStatusValues = EnumValues({"Diterima": DonationStatus.DITERIMA});
 
 class FundraiseReports {
   List<FundraiseReportsDatum>? data;
@@ -409,8 +405,8 @@ class FundraiseReportsDatum {
 }
 
 class TentacledAttributes {
-  Title? title;
-  Action? action;
+  String? title;
+  String? action;
   String? description;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -432,8 +428,8 @@ class TentacledAttributes {
 
   factory TentacledAttributes.fromJson(Map<String, dynamic> json) =>
       TentacledAttributes(
-        title: titleValues.map[json["title"]]!,
-        action: actionValues.map[json["action"]]!,
+        title: json["title"],
+        action: json["action"],
         description: json["description"],
         createdAt: json["createdAt"] == null
             ? null
@@ -447,26 +443,14 @@ class TentacledAttributes {
       );
 
   Map<String, dynamic> toJson() => {
-        "title": titleValues.reverse[title],
-        "action": actionValues.reverse[action],
+        "title": title,
+        "action": action,
         "description": description,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "publishedAt": publishedAt?.toIso8601String(),
       };
 }
-
-enum Action { POST_AKTIF }
-
-final actionValues = EnumValues({"Post Aktif": Action.POST_AKTIF});
-
-enum Title { FUNDRAISE_DIBUAT, POST_FUNDRAISE_DIBUAT, TITLE_FUNDRAISE_DIBUAT }
-
-final titleValues = EnumValues({
-  "Fundraise dibuat": Title.FUNDRAISE_DIBUAT,
-  "Post Fundraise Dibuat": Title.POST_FUNDRAISE_DIBUAT,
-  "Fundraise Dibuat": Title.TITLE_FUNDRAISE_DIBUAT
-});
 
 class Fundraiser {
   FundraiserData? data;
@@ -518,11 +502,11 @@ class FundraiserData {
 }
 
 class StickyAttributes {
-  Name? name;
+  String? name;
   String? description;
-  Address? address;
-  Phone? phone;
-  Email? email;
+  String? address;
+  String? phone;
+  String? email;
   String? website;
   bool? verfied;
   String? imageLink;
@@ -551,11 +535,11 @@ class StickyAttributes {
 
   factory StickyAttributes.fromJson(Map<String, dynamic> json) =>
       StickyAttributes(
-        name: nameValues.map[json["name"]]!,
+        name: json["name"],
         description: json["description"],
-        address: addressValues.map[json["address"]]!,
-        phone: phoneValues.map[json["phone"]]!,
-        email: emailValues.map[json["email"]]!,
+        address: json["address"],
+        phone: json["phone"],
+        email: json["email"],
         website: json["website"],
         verfied: json["verfied"],
         imageLink: json["imageLink"],
@@ -571,11 +555,11 @@ class StickyAttributes {
       );
 
   Map<String, dynamic> toJson() => {
-        "name": nameValues.reverse[name],
+        "name": name,
         "description": description,
-        "address": addressValues.reverse[address],
-        "phone": phoneValues.reverse[phone],
-        "email": emailValues.reverse[email],
+        "address": address,
+        "phone": phone,
+        "email": email,
         "website": website,
         "verfied": verfied,
         "imageLink": imageLink,
@@ -584,25 +568,6 @@ class StickyAttributes {
         "publishedAt": publishedAt?.toIso8601String(),
       };
 }
-
-enum Address { JL_GEGERKALONG_GIRANG_BARU_NO_4 }
-
-final addressValues = EnumValues({
-  "Jl. Gegerkalong Girang Baru No. 4": Address.JL_GEGERKALONG_GIRANG_BARU_NO_4
-});
-
-enum Email { DEV_AMALA_GSPDT_CO_ID }
-
-final emailValues =
-    EnumValues({"dev@amala.gspdt.co.id": Email.DEV_AMALA_GSPDT_CO_ID});
-
-enum Name { AMALA_APP }
-
-final nameValues = EnumValues({"Amala App": Name.AMALA_APP});
-
-enum Phone { THE_0222007134 }
-
-final phoneValues = EnumValues({"022 2007134": Phone.THE_0222007134});
 
 class MainImage {
   MainImageData? data;
@@ -666,7 +631,7 @@ class IndigoAttributes {
   double? size;
   String? url;
   dynamic previewUrl;
-  Provider? provider;
+  String? provider;
   dynamic providerMetadata;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -710,7 +675,7 @@ class IndigoAttributes {
         size: json["size"]?.toDouble(),
         url: json["url"],
         previewUrl: json["previewUrl"],
-        provider: providerValues.map[json["provider"]]!,
+        provider: json["provider"],
         providerMetadata: json["provider_metadata"],
         createdAt: json["createdAt"] == null
             ? null
@@ -733,16 +698,17 @@ class IndigoAttributes {
         "size": size,
         "url": url,
         "previewUrl": previewUrl,
-        "provider": providerValues.reverse[provider],
+        "provider": provider,
         "provider_metadata": providerMetadata,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
       };
 }
 
-enum Ext { JPG, PNG }
+enum Ext { JPG, PNG, WEBP }
 
-final extValues = EnumValues({".jpg": Ext.JPG, ".png": Ext.PNG});
+final extValues =
+    EnumValues({".JPG": Ext.JPG, ".png": Ext.PNG, ".webp": Ext.WEBP});
 
 class Formats {
   Large? thumbnail;
@@ -830,14 +796,13 @@ class Large {
       };
 }
 
-enum Mime { IMAGE_JPEG, IMAGE_PNG }
+enum Mime { IMAGE_JPEG, IMAGE_PNG, IMAGE_WEBP }
 
-final mimeValues =
-    EnumValues({"image/jpeg": Mime.IMAGE_JPEG, "image/png": Mime.IMAGE_PNG});
-
-enum Provider { LOCAL }
-
-final providerValues = EnumValues({"local": Provider.LOCAL});
+final mimeValues = EnumValues({
+  "image/jpeg": Mime.IMAGE_JPEG,
+  "image/png": Mime.IMAGE_PNG,
+  "image/webp": Mime.IMAGE_WEBP
+});
 
 class Meta {
   Pagination? pagination;

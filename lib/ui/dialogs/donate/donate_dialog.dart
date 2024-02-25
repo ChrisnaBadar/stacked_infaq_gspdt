@@ -73,88 +73,98 @@ class DonateDialog extends StackedView<DonateDialogModel> with $DonateDialog {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: SizedBox(
               width: kdDesktopMaxContentWidth * .5,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Text(
-                    "You are donating to: ${request.title}",
-                    style: ktsBodyLarge.copyWith(fontWeight: FontWeight.w800),
-                  ),
-                  verticalSpace(25),
-                  Text(
-                    "How much would you like to donate?",
-                    style: ktsBodyRegular,
-                  ),
-                  CurrencyInput(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputField(
-                          controller: nameController,
-                          hintText: "Nama",
-                          inputFormatters: [nameInputFormatter],
-                          textInputType: TextInputType.name,
-                          labelText: "Nama",
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Text(
+                      "Anda akan menitipkan infaq kepada: ${request.title}",
+                      style: ktsBodyLarge.copyWith(fontWeight: FontWeight.w800),
+                    ),
+                    verticalSpace(25),
+                    CurrencyInput(
+                      amountController: ammountController,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputField(
+                            controller: nameController,
+                            hintText: "Nama",
+                            inputFormatters: [nameInputFormatter],
+                            textInputType: TextInputType.name,
+                            labelText: "Nama",
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: InputField(
-                          controller: lastNameController,
-                          hintText: "Nama Akhir",
-                          inputFormatters: [nameInputFormatter],
-                          textInputType: TextInputType.name,
-                          labelText: "Nama Akhir",
+                        Expanded(
+                          child: InputField(
+                            controller: lastNameController,
+                            hintText: "Nama Akhir",
+                            inputFormatters: [nameInputFormatter],
+                            textInputType: TextInputType.name,
+                            labelText: "Nama Akhir",
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputField(
-                          controller: emailController,
-                          hintText: "Email",
-                          inputFormatters: [emailInputFormatter],
-                          textInputType: TextInputType.emailAddress,
-                          labelText: "Email",
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputField(
+                            controller: emailController,
+                            hintText: "Email",
+                            inputFormatters: [emailInputFormatter],
+                            textInputType: TextInputType.emailAddress,
+                            labelText: "Email",
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: InputField(
-                          controller: phoneController,
-                          hintText: "Telepon",
-                          inputFormatters: [phoneInputFormatter],
-                          textInputType: TextInputType.phone,
-                          labelText: "Telepon",
+                        Expanded(
+                          child: InputField(
+                            controller: phoneController,
+                            hintText: "Telepon",
+                            inputFormatters: [phoneInputFormatter],
+                            textInputType: TextInputType.phone,
+                            labelText: "Telepon",
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  InputField(
-                    controller: addressController,
-                    hintText: "Alamat",
-                    inputFormatters: [addressInputFormatter],
-                    textInputType: TextInputType.streetAddress,
-                    labelText: "Alamat",
-                    maxLines: 5,
-                  ),
-                  InputField(
-                    controller: doaController,
-                    hintText: "Doa",
-                    inputFormatters: [messageInputFormatter],
-                    textInputType: TextInputType.text,
-                    labelText: "Doa",
-                    maxLines: 3,
-                  ),
-                  ThemedButton(
-                      onPressed: () {
-                        print(nameController.text);
-                      },
-                      buttonText: "DONATE")
-                ],
+                      ],
+                    ),
+                    // InputField(
+                    //   controller: addressController,
+                    //   hintText: "Alamat",
+                    //   inputFormatters: [addressInputFormatter],
+                    //   textInputType: TextInputType.streetAddress,
+                    //   labelText: "Alamat",
+                    //   maxLines: 5,
+                    // ),
+                    InputField(
+                      controller: doaController,
+                      hintText: "Doa",
+                      inputFormatters: [messageInputFormatter],
+                      textInputType: TextInputType.text,
+                      labelText: "Doa",
+                      maxLines: 3,
+                    ),
+                    ThemedButton(
+                        onPressed: () {
+                          String cleanedInput = ammountController.text
+                              .replaceAll(RegExp(r'[^\d,]'), '');
+                          if (cleanedInput.contains(',')) {
+                            cleanedInput = cleanedInput.split(',')[0];
+                          }
+                          int result = int.parse(cleanedInput);
+                          print(
+                              "id: ${request.data}Nama: ${nameController.text} \nNominal: $result \nKontak: ${phoneController.text} \nDoa: ${doaController.text}");
+                        },
+                        buttonText: "INFAQ"),
+                    SizedBox(
+                      height: 25,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

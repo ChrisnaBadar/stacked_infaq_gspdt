@@ -13,10 +13,13 @@ class HomeViewModel extends BaseViewModel {
   final _httpService = locator<HttpService>();
 
   void showDonateDialog(
-      {required String causeTitle, required String description}) {
+      {required int id,
+      required String causeTitle,
+      required String description}) {
     _dialogService.showCustomDialog(
         variant: DialogType.donate,
         title: causeTitle,
+        data: id,
         description: 'Donate now to $causeTitle with id $description');
   }
 

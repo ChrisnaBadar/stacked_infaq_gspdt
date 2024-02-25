@@ -57,36 +57,36 @@ class MainLayoutView extends StackedView<MainLayoutViewModel> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    TextButton(
-                                        onPressed: () {
-                                          viewModel.toHome();
-                                        },
-                                        child: Text(
-                                          "Home",
-                                          style: ktsBodyRegular.copyWith(
-                                              fontWeight: FontWeight.w800,
-                                              color: kcPrimaryColorDark),
-                                        )),
-                                    TextButton(
-                                        onPressed: () {
-                                          viewModel.toCauses();
-                                        },
-                                        child: Text(
-                                          "Profile",
-                                          style: ktsBodyRegular.copyWith(
-                                              fontWeight: FontWeight.w800,
-                                              color: kcPrimaryColorDark),
-                                        )),
-                                    TextButton(
-                                        onPressed: () {
-                                          viewModel.toPortofolio();
-                                        },
-                                        child: Text(
-                                          "Portofolio",
-                                          style: ktsBodyRegular.copyWith(
-                                              fontWeight: FontWeight.w800,
-                                              color: kcPrimaryColorDark),
-                                        )),
+                                    // TextButton(
+                                    //     onPressed: () {
+                                    //       viewModel.toHome();
+                                    //     },
+                                    //     child: Text(
+                                    //       "Home",
+                                    //       style: ktsBodyRegular.copyWith(
+                                    //           fontWeight: FontWeight.w800,
+                                    //           color: kcPrimaryColorDark),
+                                    //     )),
+                                    // TextButton(
+                                    //     onPressed: () {
+                                    //       viewModel.toCauses();
+                                    //     },
+                                    //     child: Text(
+                                    //       "Profile",
+                                    //       style: ktsBodyRegular.copyWith(
+                                    //           fontWeight: FontWeight.w800,
+                                    //           color: kcPrimaryColorDark),
+                                    //     )),
+                                    // TextButton(
+                                    //     onPressed: () {
+                                    //       viewModel.toPortofolio();
+                                    //     },
+                                    //     child: Text(
+                                    //       "Portofolio",
+                                    //       style: ktsBodyRegular.copyWith(
+                                    //           fontWeight: FontWeight.w800,
+                                    //           color: kcPrimaryColorDark),
+                                    //     )),
                                   ],
                                 )),
                           )

@@ -23,11 +23,12 @@ class HomeSecondSection extends StatelessWidget {
         .first;
     var targetDonation = featuredData.attributes!.targetDonation;
     var collectedDonation = featuredData.attributes!.donations!.data!
-        .where((e) => e.attributes!.donationStatus! == DonationStatus.DITERIMA)
+        .where((e) => e.attributes!.donationStatus! == "Diterima")
         .map((e) => int.parse(e.attributes!.nominal!))
         .reduce((v, t) => v + t);
 
     Map<String, dynamic> dataList = {
+      "id": featuredData.id,
       "img":
           "https://api.amala-api.online${featuredData.attributes!.mainImage!.data!.attributes!.url!}",
       "title":
@@ -260,7 +261,8 @@ Widget _urgentCause(BuildContext context, Map<String, dynamic> dataList,
                   onPressed: () {
                     viewModel.showDonateDialog(
                         causeTitle: dataList['title'],
-                        description: dataList['description']);
+                        description: dataList['description'],
+                        id: dataList['id']);
                   },
                   color: kcVeryLightGrey,
                   textColor: kcPrimaryColorDark,
@@ -272,7 +274,7 @@ Widget _urgentCause(BuildContext context, Map<String, dynamic> dataList,
                       width: 200,
                       height: 25,
                       child: Text(
-                        'DONATE',
+                        'INFAQ',
                         textAlign: TextAlign.center,
                         style: ktsBodyRegular.copyWith(
                             fontWeight: FontWeight.w700),

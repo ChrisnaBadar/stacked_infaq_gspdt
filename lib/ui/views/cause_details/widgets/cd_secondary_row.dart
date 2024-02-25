@@ -111,7 +111,7 @@ class CauseDetailsSecondaryRow extends StatelessWidget {
                                   fundraiseModel!.data!.attributes!.title!,
                               description: 'description');
                         },
-                        buttonText: "DONATE")),
+                        buttonText: "INFAQ")),
               ),
               Padding(
                 padding:

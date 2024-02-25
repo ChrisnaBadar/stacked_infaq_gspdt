@@ -236,7 +236,7 @@ class CauseDetailsMainRow extends StatelessWidget {
             description: fundraiseModel!
                 .data!.attributes!.description!.first.children!.first.text!);
       },
-      buttonText: 'DONATE',
+      buttonText: 'INFAQ',
     );
   }
 
