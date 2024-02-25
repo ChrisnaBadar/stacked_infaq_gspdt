@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:infaq/app/app.bottomsheets.dart';
 import 'package:infaq/app/app.dialogs.dart';
@@ -13,7 +14,7 @@ Future<void> main() async {
   await setupLocator(stackedRouter: stackedRouter);
   setupDialogUi();
   setupBottomSheetUi();
-  runApp(const MainApp());
+  initializeDateFormatting("id").then((_) => runApp(const MainApp()));
 }
 
 class MainApp extends StatelessWidget {

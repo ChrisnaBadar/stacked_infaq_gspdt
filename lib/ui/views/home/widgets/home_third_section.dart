@@ -38,11 +38,13 @@ class HomeThirdSection extends StatelessWidget {
                   verticalSpace(10),
                   Text(
                     faker.lorem.sentence(),
+                    maxLines: 1,
                     style: ktsBodyLarge.copyWith(color: kcVeryLightGrey),
                   ),
                   verticalSpace(10),
                   Text(
                     faker.lorem.sentences(10).join(" "),
+                    maxLines: 8,
                     style: ktsBodyRegular.copyWith(color: kcVeryLightGrey),
                   )
                 ],

@@ -107,6 +107,7 @@ class CauseDetailsSecondaryRow extends StatelessWidget {
                     child: ThemedButton(
                         onPressed: () {
                           viewModel.showDonateDialog(
+                              id: fundraiseModel!.data!.id!,
                               causeTitle:
                                   fundraiseModel!.data!.attributes!.title!,
                               description: 'description');

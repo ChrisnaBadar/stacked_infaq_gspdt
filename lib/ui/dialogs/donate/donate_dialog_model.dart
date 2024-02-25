@@ -4,7 +4,6 @@ import 'package:stacked/stacked.dart';
 
 class DonateDialogModel extends FormViewModel {
   final _httpService = locator<HttpService>();
-  bool isLoading = false;
 
   Future postDonationData(
       {required String nama,

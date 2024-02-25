@@ -7,6 +7,7 @@ import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/common/ui_helpers.dart';
 import 'package:infaq/ui/views/home/home_viewmodel.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class FsArticles extends StatefulWidget {
@@ -96,7 +97,12 @@ class CauseListCarousel extends StatelessWidget {
         (index) => ArticleItem(
             title: articlesModel.data![index].attributes!.articleTitle!,
             imgLink: articlesModel.data![index].attributes!.landscapeImageLink!,
-            viewModel: viewModel));
+            viewModel: viewModel,
+            author: articlesModel.data![index].attributes!.author!,
+            date: DateFormat("dd MMM yy", "id_ID")
+                .format(articlesModel.data![index].attributes!.date!),
+            highlight: articlesModel.data![index].attributes!.mainArticle!.first
+                .children!.first.text!));
     return CarouselSlider(
       carouselController: controller, // Assign the controller here
       options: CarouselOptions(
@@ -132,12 +138,18 @@ class CauseListCarousel extends StatelessWidget {
 class ArticleItem extends StatelessWidget {
   final String title;
   final String imgLink;
+  final String author;
+  final String date;
+  final String highlight;
   final HomeViewModel viewModel;
 
   const ArticleItem(
       {Key? key,
       required this.title,
       required this.imgLink,
+      required this.author,
+      required this.date,
+      required this.highlight,
       required this.viewModel})
       : super(key: key);
 
@@ -169,7 +181,7 @@ class ArticleItem extends StatelessWidget {
                 children: [
                   Icon(Icons.av_timer_outlined),
                   Text(
-                    "01 Des 23",
+                    date,
                     style: ktsBodyRegular.copyWith(
                         fontSize: 12, color: kcMediumGrey),
                   )
@@ -179,7 +191,7 @@ class ArticleItem extends StatelessWidget {
                 children: [
                   Icon(Icons.person_4_outlined),
                   Text(
-                    "John Doe",
+                    author,
                     style: ktsBodyRegular.copyWith(
                         fontSize: 12, color: kcMediumGrey),
                   )
@@ -189,7 +201,7 @@ class ArticleItem extends StatelessWidget {
           ),
           verticalSpace(10),
           Text(
-            faker.lorem.sentences(5).join(" "),
+            highlight,
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
             style: ktsBodyRegular.copyWith(color: kcMediumGrey),

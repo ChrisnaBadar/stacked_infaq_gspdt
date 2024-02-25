@@ -67,7 +67,7 @@ class _CurrencyInputState extends State<CurrencyInput> {
                     hintText: "",
                     inputFormatters: [CurrencyInputFormatter()],
                     textInputType: TextInputType.number,
-                    labelText: "Jumlah (IDR)",
+                    labelText: "*Jumlah (IDR)",
                   ),
                 ),
                 Expanded(
