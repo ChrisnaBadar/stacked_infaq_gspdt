@@ -1,7 +1,7 @@
 import 'package:infaq/app/app.dialogs.dart';
 import 'package:infaq/app/app.locator.dart';
 import 'package:infaq/models/fundraise_model.dart';
-import 'package:infaq/models/muslim_articles_model.dart';
+import 'package:infaq/models/articles_model.dart';
 import 'package:infaq/services/http_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -23,7 +23,7 @@ class CauseDetailsViewModel extends BaseViewModel {
     return await _httpService.getSingleFundraiseData(id: id);
   }
 
-  Future<MuslimArticlesModel?> getArticlesData() async {
+  Future<ArticlesModel?> getArticlesData() async {
     return await _httpService.getArticlesData();
   }
 

@@ -1,21 +1,20 @@
 import 'dart:convert';
 
-class MuslimArticlesModel {
+class ArticlesModel {
   List<Datum>? data;
   Meta? meta;
 
-  MuslimArticlesModel({
+  ArticlesModel({
     this.data,
     this.meta,
   });
 
-  factory MuslimArticlesModel.fromRawJson(String str) =>
-      MuslimArticlesModel.fromJson(json.decode(str));
+  factory ArticlesModel.fromRawJson(String str) =>
+      ArticlesModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory MuslimArticlesModel.fromJson(Map<String, dynamic> json) =>
-      MuslimArticlesModel(
+  factory ArticlesModel.fromJson(Map<String, dynamic> json) => ArticlesModel(
         data: json["data"] == null
             ? []
             : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
@@ -57,30 +56,32 @@ class Datum {
 }
 
 class DatumAttributes {
-  String? title;
-  DateTime? date;
-  DateTime? dateTime;
-  String? imageLink;
-  String? author;
-  String? category;
-  List<DescriptionBlock>? descriptionBlocks;
+  String? articleTitle;
   DateTime? createdAt;
   DateTime? updatedAt;
   DateTime? publishedAt;
-  Image? image;
+  String? author;
+  DateTime? date;
+  List<MainArticle>? mainArticle;
+  String? category;
+  String? landscapeImageLink;
+  String? portraitImageLink;
+  ArticleMainImage? articleMainImage;
+  ArticleMainImage? articleMainImagePortrait;
 
   DatumAttributes({
-    this.title,
-    this.date,
-    this.dateTime,
-    this.imageLink,
-    this.author,
-    this.category,
-    this.descriptionBlocks,
+    this.articleTitle,
     this.createdAt,
     this.updatedAt,
     this.publishedAt,
-    this.image,
+    this.author,
+    this.date,
+    this.mainArticle,
+    this.category,
+    this.landscapeImageLink,
+    this.portraitImageLink,
+    this.articleMainImage,
+    this.articleMainImagePortrait,
   });
 
   factory DatumAttributes.fromRawJson(String str) =>
@@ -90,17 +91,7 @@ class DatumAttributes {
 
   factory DatumAttributes.fromJson(Map<String, dynamic> json) =>
       DatumAttributes(
-        title: json["title"],
-        date: json["date"] == null ? null : DateTime.parse(json["date"]),
-        dateTime:
-            json["dateTime"] == null ? null : DateTime.parse(json["dateTime"]),
-        imageLink: json["imageLink"],
-        author: json["author"],
-        category: json["category"],
-        descriptionBlocks: json["descriptionBlocks"] == null
-            ? []
-            : List<DescriptionBlock>.from(json["descriptionBlocks"]!
-                .map((x) => DescriptionBlock.fromJson(x))),
+        articleTitle: json["articleTitle"],
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
@@ -110,125 +101,56 @@ class DatumAttributes {
         publishedAt: json["publishedAt"] == null
             ? null
             : DateTime.parse(json["publishedAt"]),
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
+        author: json["author"],
+        date: json["date"] == null ? null : DateTime.parse(json["date"]),
+        mainArticle: json["mainArticle"] == null
+            ? []
+            : List<MainArticle>.from(
+                json["mainArticle"]!.map((x) => MainArticle.fromJson(x))),
+        category: json["category"],
+        landscapeImageLink: json["landscapeImageLink"],
+        portraitImageLink: json["portraitImageLink"],
+        articleMainImage: json["articleMainImage"] == null
+            ? null
+            : ArticleMainImage.fromJson(json["articleMainImage"]),
+        articleMainImagePortrait: json["articleMainImagePortrait"] == null
+            ? null
+            : ArticleMainImage.fromJson(json["articleMainImagePortrait"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "title": title,
-        "date":
-            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
-        "dateTime": dateTime?.toIso8601String(),
-        "imageLink": imageLink,
-        "author": author,
-        "category": category,
-        "descriptionBlocks": descriptionBlocks == null
-            ? []
-            : List<dynamic>.from(descriptionBlocks!.map((x) => x.toJson())),
+        "articleTitle": articleTitle,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "publishedAt": publishedAt?.toIso8601String(),
-        "image": image?.toJson(),
+        "author": author,
+        "date":
+            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
+        "mainArticle": mainArticle == null
+            ? []
+            : List<dynamic>.from(mainArticle!.map((x) => x.toJson())),
+        "category": category,
+        "landscapeImageLink": landscapeImageLink,
+        "portraitImageLink": portraitImageLink,
+        "articleMainImage": articleMainImage?.toJson(),
+        "articleMainImagePortrait": articleMainImagePortrait?.toJson(),
       };
 }
 
-class DescriptionBlock {
-  DescriptionBlockType? type;
-  List<Child>? children;
-  String? format;
-
-  DescriptionBlock({
-    this.type,
-    this.children,
-    this.format,
-  });
-
-  factory DescriptionBlock.fromRawJson(String str) =>
-      DescriptionBlock.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory DescriptionBlock.fromJson(Map<String, dynamic> json) =>
-      DescriptionBlock(
-        type: descriptionBlockTypeValues.map[json["type"]]!,
-        children: json["children"] == null
-            ? []
-            : List<Child>.from(json["children"]!.map((x) => Child.fromJson(x))),
-        format: json["format"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "type": descriptionBlockTypeValues.reverse[type],
-        "children": children == null
-            ? []
-            : List<dynamic>.from(children!.map((x) => x.toJson())),
-        "format": format,
-      };
-}
-
-class Child {
-  ChildType? type;
-  String? text;
-  List<Child>? children;
-  bool? bold;
-  bool? italic;
-
-  Child({
-    this.type,
-    this.text,
-    this.children,
-    this.bold,
-    this.italic,
-  });
-
-  factory Child.fromRawJson(String str) => Child.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Child.fromJson(Map<String, dynamic> json) => Child(
-        type: childTypeValues.map[json["type"]]!,
-        text: json["text"],
-        children: json["children"] == null
-            ? []
-            : List<Child>.from(json["children"]!.map((x) => Child.fromJson(x))),
-        bold: json["bold"],
-        italic: json["italic"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "type": childTypeValues.reverse[type],
-        "text": text,
-        "children": children == null
-            ? []
-            : List<dynamic>.from(children!.map((x) => x.toJson())),
-        "bold": bold,
-        "italic": italic,
-      };
-}
-
-enum ChildType { LIST_ITEM, TEXT }
-
-final childTypeValues =
-    EnumValues({"list-item": ChildType.LIST_ITEM, "text": ChildType.TEXT});
-
-enum DescriptionBlockType { LIST, PARAGRAPH }
-
-final descriptionBlockTypeValues = EnumValues({
-  "list": DescriptionBlockType.LIST,
-  "paragraph": DescriptionBlockType.PARAGRAPH
-});
-
-class Image {
+class ArticleMainImage {
   Data? data;
 
-  Image({
+  ArticleMainImage({
     this.data,
   });
 
-  factory Image.fromRawJson(String str) => Image.fromJson(json.decode(str));
+  factory ArticleMainImage.fromRawJson(String str) =>
+      ArticleMainImage.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory ArticleMainImage.fromJson(Map<String, dynamic> json) =>
+      ArticleMainImage(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
       );
 
@@ -271,8 +193,8 @@ class DataAttributes {
   int? height;
   Formats? formats;
   String? hash;
-  String? ext;
-  String? mime;
+  Ext? ext;
+  Mime? mime;
   double? size;
   String? url;
   dynamic previewUrl;
@@ -314,8 +236,8 @@ class DataAttributes {
         formats:
             json["formats"] == null ? null : Formats.fromJson(json["formats"]),
         hash: json["hash"],
-        ext: json["ext"],
-        mime: json["mime"],
+        ext: extValues.map[json["ext"]]!,
+        mime: mimeValues.map[json["mime"]]!,
         size: json["size"]?.toDouble(),
         url: json["url"],
         previewUrl: json["previewUrl"],
@@ -337,8 +259,8 @@ class DataAttributes {
         "height": height,
         "formats": formats?.toJson(),
         "hash": hash,
-        "ext": ext,
-        "mime": mime,
+        "ext": extValues.reverse[ext],
+        "mime": mimeValues.reverse[mime],
         "size": size,
         "url": url,
         "previewUrl": previewUrl,
@@ -348,6 +270,10 @@ class DataAttributes {
         "updatedAt": updatedAt?.toIso8601String(),
       };
 }
+
+enum Ext { WEBP }
+
+final extValues = EnumValues({".webp": Ext.WEBP});
 
 class Formats {
   Large? thumbnail;
@@ -386,8 +312,8 @@ class Formats {
 class Large {
   String? name;
   String? hash;
-  String? ext;
-  String? mime;
+  Ext? ext;
+  Mime? mime;
   dynamic path;
   int? width;
   int? height;
@@ -413,8 +339,8 @@ class Large {
   factory Large.fromJson(Map<String, dynamic> json) => Large(
         name: json["name"],
         hash: json["hash"],
-        ext: json["ext"],
-        mime: json["mime"],
+        ext: extValues.map[json["ext"]]!,
+        mime: mimeValues.map[json["mime"]]!,
         path: json["path"],
         width: json["width"],
         height: json["height"],
@@ -425,8 +351,8 @@ class Large {
   Map<String, dynamic> toJson() => {
         "name": name,
         "hash": hash,
-        "ext": ext,
-        "mime": mime,
+        "ext": extValues.reverse[ext],
+        "mime": mimeValues.reverse[mime],
         "path": path,
         "width": width,
         "height": height,
@@ -434,6 +360,89 @@ class Large {
         "url": url,
       };
 }
+
+enum Mime { IMAGE_WEBP }
+
+final mimeValues = EnumValues({"image/webp": Mime.IMAGE_WEBP});
+
+class MainArticle {
+  MainArticleType? type;
+  List<Child>? children;
+  String? format;
+
+  MainArticle({
+    this.type,
+    this.children,
+    this.format,
+  });
+
+  factory MainArticle.fromRawJson(String str) =>
+      MainArticle.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory MainArticle.fromJson(Map<String, dynamic> json) => MainArticle(
+        type: mainArticleTypeValues.map[json["type"]]!,
+        children: json["children"] == null
+            ? []
+            : List<Child>.from(json["children"]!.map((x) => Child.fromJson(x))),
+        format: json["format"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "type": mainArticleTypeValues.reverse[type],
+        "children": children == null
+            ? []
+            : List<dynamic>.from(children!.map((x) => x.toJson())),
+        "format": format,
+      };
+}
+
+class Child {
+  ChildType? type;
+  String? text;
+  bool? bold;
+  List<Child>? children;
+
+  Child({
+    this.type,
+    this.text,
+    this.bold,
+    this.children,
+  });
+
+  factory Child.fromRawJson(String str) => Child.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Child.fromJson(Map<String, dynamic> json) => Child(
+        type: childTypeValues.map[json["type"]]!,
+        text: json["text"],
+        bold: json["bold"],
+        children: json["children"] == null
+            ? []
+            : List<Child>.from(json["children"]!.map((x) => Child.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "type": childTypeValues.reverse[type],
+        "text": text,
+        "bold": bold,
+        "children": children == null
+            ? []
+            : List<dynamic>.from(children!.map((x) => x.toJson())),
+      };
+}
+
+enum ChildType { LIST_ITEM, TEXT }
+
+final childTypeValues =
+    EnumValues({"list-item": ChildType.LIST_ITEM, "text": ChildType.TEXT});
+
+enum MainArticleType { LIST, PARAGRAPH }
+
+final mainArticleTypeValues = EnumValues(
+    {"list": MainArticleType.LIST, "paragraph": MainArticleType.PARAGRAPH});
 
 class Meta {
   Pagination? pagination;

@@ -106,11 +106,12 @@ class CauseListCarousel extends StatelessWidget {
               items: List.generate(
                   articleData.length,
                   (index) => CauseItem(
-                        title: articleData[index].attributes!.title!,
-                        imgLink: articleData[index].attributes!.imageLink!,
+                        title: articleData[index].attributes!.articleTitle!,
+                        imgLink:
+                            articleData[index].attributes!.landscapeImageLink!,
                         description: articleData[index]
                             .attributes!
-                            .descriptionBlocks!
+                            .mainArticle!
                             .first
                             .children!
                             .first

@@ -2,6 +2,7 @@ import 'package:infaq/app/app.dialogs.dart';
 import 'package:infaq/app/app.locator.dart';
 import 'package:infaq/app/app.router.dart';
 import 'package:infaq/models/fundraises_list_model.dart';
+import 'package:infaq/models/articles_model.dart';
 import 'package:infaq/services/http_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -31,14 +32,7 @@ class HomeViewModel extends BaseViewModel {
     return await _httpService.getFundraisesData();
   }
 
-  Future<void> launchArtcile(String id) async {
-    String finalUrl = "https://blog.gspdt.co.id/article-details/$id";
-    String maintenanceUrl = "https:/blog.gspdt.co.id/under-maintenance";
-
-    if (await canLaunchUrl(Uri.parse(maintenanceUrl))) {
-      await launchUrl(Uri.parse(maintenanceUrl));
-    } else {
-      throw 'Could not launch $maintenanceUrl';
-    }
+  Future<ArticlesModel?> getArticlesData() async {
+    return await _httpService.getArticlesData();
   }
 }

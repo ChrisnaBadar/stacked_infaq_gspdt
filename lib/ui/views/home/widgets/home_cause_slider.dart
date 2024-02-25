@@ -90,8 +90,6 @@ class CauseListCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'imageLink: ${fundraisesListModel.data!.first.attributes!.mainImage!.data!.attributes!.url!}');
     final List<Widget> _items = List.generate(
         5,
         (index) => CauseItem(
@@ -99,7 +97,7 @@ class CauseListCarousel extends StatelessWidget {
             description: fundraisesListModel
                 .data![index].attributes!.description![0].children![0].text!,
             progress: 0.85,
-            toGo: '\$21,444 To Go',
+            toGo: fundraisesListModel.data![index].attributes!.targetDonation!,
             imgLink: fundraisesListModel.data![index].attributes!.imageLink!,
             onTap: () => viewModel.toCauseDetailsView(
                 causeId: fundraisesListModel.data![index].id.toString())));

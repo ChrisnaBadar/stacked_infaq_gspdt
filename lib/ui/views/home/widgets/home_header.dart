@@ -231,7 +231,7 @@ class _HomeHeaderState extends State<HomeHeader> {
               verticalSpace(10),
               Text(
                 description,
-                maxLines: 6,
+                maxLines: 5,
                 overflow: TextOverflow.ellipsis,
                 style: ktsBodyRegular.copyWith(color: Colors.white),
               ),

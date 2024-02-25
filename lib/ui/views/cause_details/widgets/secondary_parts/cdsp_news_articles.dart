@@ -36,21 +36,23 @@ class _CauseDetailsNewsArticlesState extends State<CauseDetailsNewsArticles> {
                             height: 50,
                             color: kcPrimaryColorDark,
                             child: Image.network(
-                              articleData[index].attributes!.imageLink!,
+                              articleData[index]
+                                  .attributes!
+                                  .landscapeImageLink!,
                               scale: 3,
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
                         title: Text(
-                          articleData[index].attributes!.title!,
+                          articleData[index].attributes!.articleTitle!,
                           style: ktsBodyLarge.copyWith(
                               fontWeight: FontWeight.w700),
                         ),
                         subtitle: Text(
                           articleData[index]
                               .attributes!
-                              .descriptionBlocks!
+                              .mainArticle!
                               .first
                               .children!
                               .first

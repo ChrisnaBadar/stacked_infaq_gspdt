@@ -79,7 +79,7 @@ class CauseDetailsMainRow extends StatelessWidget {
             width: double.infinity,
           ),
 
-          LangSwitch(),
+          // LangSwitch(),
 
           //Row of title and button
           Padding(
