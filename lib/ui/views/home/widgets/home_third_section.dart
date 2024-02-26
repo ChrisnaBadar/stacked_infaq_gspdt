@@ -12,13 +12,6 @@ class HomeThirdSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int getRandomIndex() {
-      final random = Random();
-      return random.nextInt(fundraisesListModel.data!.length);
-    }
-
-    var randomInt = getRandomIndex();
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: SizedBox(
@@ -27,7 +20,7 @@ class HomeThirdSection extends StatelessWidget {
         child: Stack(
           children: [
             Image.network(
-              fundraisesListModel.data![randomInt].attributes!.imageLink!,
+              fundraisesListModel.data![1].attributes!.imageLink!,
               fit: BoxFit.cover,
               width: double.infinity,
             ),
@@ -41,22 +34,22 @@ class HomeThirdSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    fundraisesListModel.data![randomInt].attributes!.title!,
+                    fundraisesListModel.data![1].attributes!.title!,
                     style: ktsBodyLarge.copyWith(
                         color: kcVeryLightGrey, fontWeight: FontWeight.w700),
                   ),
                   verticalSpace(10),
                   Text(
-                    fundraisesListModel.data![randomInt].attributes!
-                        .description!.first.children!.first.text!,
+                    fundraisesListModel.data![1].attributes!.description!.first
+                        .children!.first.text!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: ktsBodyLarge.copyWith(color: kcVeryLightGrey),
                   ),
                   verticalSpace(10),
                   Text(
-                    fundraisesListModel.data![randomInt].attributes!
-                        .description![1].children!.first.text!,
+                    fundraisesListModel.data![1].attributes!.description![1]
+                        .children!.first.text!,
                     maxLines: 8,
                     overflow: TextOverflow.ellipsis,
                     style: ktsBodyRegular.copyWith(color: kcVeryLightGrey),

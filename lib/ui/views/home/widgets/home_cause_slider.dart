@@ -3,9 +3,13 @@ import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:infaq/models/fundraise_model.dart';
 import 'package:infaq/models/fundraises_list_model.dart';
+import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
+import 'package:infaq/ui/common/ui_helpers.dart';
 import 'package:infaq/ui/views/home/home_viewmodel.dart';
 import 'package:infaq/ui/widgets/themed_button.dart';
+import 'package:intl/intl.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class HomeCauseSlider extends StatefulWidget {
@@ -93,14 +97,17 @@ class CauseListCarousel extends StatelessWidget {
     final List<Widget> _items = List.generate(
         5,
         (index) => CauseItem(
-            title: fundraisesListModel.data![index].attributes!.title!,
-            description: fundraisesListModel
-                .data![index].attributes!.description![0].children![0].text!,
-            progress: 0.85,
-            toGo: fundraisesListModel.data![index].attributes!.targetDonation!,
-            imgLink: fundraisesListModel.data![index].attributes!.imageLink!,
-            onTap: () => viewModel.toCauseDetailsView(
-                causeId: fundraisesListModel.data![index].id.toString())));
+              title: fundraisesListModel.data![index].attributes!.title!,
+              description: fundraisesListModel
+                  .data![index].attributes!.description![0].children![0].text!,
+              progress: 0.85,
+              toGo:
+                  fundraisesListModel.data![index].attributes!.targetDonation!,
+              imgLink: fundraisesListModel.data![index].attributes!.imageLink!,
+              onTap: () => viewModel.toCauseDetailsView(
+                  causeId: fundraisesListModel.data![index].id.toString()),
+              fundraisesListModelDatum: fundraisesListModel.data![index],
+            ));
 
     return CarouselSlider(
       carouselController: controller, // Assign the controller here
@@ -140,6 +147,7 @@ class CauseItem extends StatelessWidget {
   final double progress;
   final String toGo;
   final String imgLink;
+  final FundraisesListModelDatum fundraisesListModelDatum;
   final Function()? onTap;
 
   const CauseItem(
@@ -149,6 +157,7 @@ class CauseItem extends StatelessWidget {
       required this.progress,
       required this.toGo,
       required this.imgLink,
+      required this.fundraisesListModelDatum,
       required this.onTap})
       : super(key: key);
 
@@ -172,19 +181,59 @@ class CauseItem extends StatelessWidget {
             ),
             Text(title,
                 maxLines: 2,
+                textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
-                style: ktsBodyLarge.copyWith()),
+                style: ktsBodyLarge.copyWith(
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w600,
+                    color: kcPrimaryColorDark)),
             Text(
               description,
+              textAlign: TextAlign.center,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: ktsBodyRegular,
             ),
-            LinearProgressIndicator(value: progress),
-            Text(toGo),
+            verticalSpace(8),
+            LinearPercentIndicator(
+              percent: (fundraisesListModelDatum.attributes!.donations!.data!
+                      .where((element) =>
+                          element.attributes!.donationStatus == "Diterima")
+                      .map((e) => int.parse(e.attributes!.nominal!))
+                      .reduce((value, element) => value + element)) /
+                  double.parse(
+                      fundraisesListModelDatum.attributes!.targetDonation!),
+              progressColor: kcPrimaryColorDark,
+            ),
+            verticalSpace(8),
+            Text.rich(
+                textAlign: TextAlign.center,
+                style: ktsBodyRegular.copyWith(
+                    fontSize: 13,
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w400,
+                    color: kcMediumGrey),
+                TextSpan(children: [
+                  TextSpan(
+                    text: "Terkumpul ",
+                  ),
+                  TextSpan(
+                      text:
+                          "Rp. ${NumberFormat("#,##0.-", "id_ID").format(fundraisesListModelDatum.attributes!.donations!.data!.where((element) => element.attributes!.donationStatus == "Diterima").map((e) => int.parse(e.attributes!.nominal!)).reduce((value, element) => value + element))} ",
+                      style:
+                          ktsBodyRegular.copyWith(color: kcPrimaryColorDark)),
+                  TextSpan(
+                    text: "dari total ",
+                  ),
+                  TextSpan(
+                      text:
+                          "Rp. ${NumberFormat("#,##0.-", "id_ID").format(int.parse(toGo))}",
+                      style: ktsBodyRegular.copyWith(color: kcPrimaryColor)),
+                ])),
+            verticalSpace(8),
             ThemedButton(
               onPressed: () {},
-              buttonText: "DONATE NOW",
+              buttonText: "Infaq Sekarang",
               reverse: true,
             ),
           ],

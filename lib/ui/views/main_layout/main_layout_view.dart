@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infaq/extensions/hover_extensions.dart';
-import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_constants.dart';
-import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/common/ui_helpers.dart';
-import 'package:infaq/ui/views/main_layout/widgets/menu_buttons.dart';
 import 'package:infaq/ui/views/main_layout/widgets/web_logo.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:stacked/stacked.dart';
@@ -42,7 +39,9 @@ class MainLayoutView extends StackedView<MainLayoutViewModel> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 40),
                               child: GestureDetector(
-                                child: const WebLogo(),
+                                child: WebLogo(
+                                  viewModel: viewModel,
+                                ),
                               ).showCursorOnHover,
                             ),
                           ),
@@ -50,10 +49,11 @@ class MainLayoutView extends StackedView<MainLayoutViewModel> {
                             child: getValueForScreenType(
                                 context: context,
                                 mobile: Container(
-                                  alignment: Alignment.centerRight,
-                                  child: const MenuButtons(),
-                                ),
-                                desktop: Row(
+                                    alignment: Alignment.centerRight,
+                                    child: Container()
+                                    // const MenuButtons(),
+                                    ),
+                                desktop: const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
