@@ -190,6 +190,12 @@ class DonateDialog extends StackedView<DonateDialogModel> with $DonateDialog {
                     SizedBox(
                       height: 25,
                     ),
+                    TextButton(
+                        onPressed: () {
+                          viewModel.toPrivacyPolicyView();
+                          completer(DialogResponse(confirmed: true));
+                        },
+                        child: Text("Syarat & Ketentuan"))
                   ],
                 ),
               ),

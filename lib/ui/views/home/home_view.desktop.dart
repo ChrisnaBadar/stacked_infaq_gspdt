@@ -8,7 +8,6 @@ import 'package:infaq/ui/views/home/widgets/home_header.dart';
 import 'package:infaq/ui/views/home/widgets/home_second_section.dart';
 import 'package:infaq/ui/views/home/widgets/home_third_section.dart';
 import 'package:stacked/stacked.dart';
-
 import 'home_viewmodel.dart';
 
 class HomeViewDesktop extends ViewModelWidget<HomeViewModel> {
@@ -46,7 +45,10 @@ class HomeViewDesktop extends ViewModelWidget<HomeViewModel> {
                     viewModel: viewModel,
                     fundraisesListModel: fundraisesListMode,
                   ),
-                  HomeThirdSection(),
+                  fundraisesListMode.data!.length > 1
+                      ? HomeThirdSection(
+                          fundraisesListModel: fundraisesListMode)
+                      : Container(),
                   HomeFourthSection(
                     viewModel: viewModel,
                   )

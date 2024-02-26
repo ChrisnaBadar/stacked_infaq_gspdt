@@ -7,10 +7,12 @@ import 'dart:async' as _i4;
 import 'dart:ui' as _i8;
 
 import 'package:flutter/material.dart' as _i5;
-import 'package:infaq/models/fundraise_model.dart' as _i13;
-import 'package:infaq/models/fundraises_list_model.dart' as _i12;
+import 'package:infaq/models/articles_model.dart' as _i15;
+import 'package:infaq/models/fundraise_model.dart' as _i14;
+import 'package:infaq/models/fundraises_list_model.dart' as _i13;
 import 'package:infaq/services/http_service.dart' as _i11;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:mockito/src/dummies.dart' as _i12;
 import 'package:stacked/stacked.dart' as _i2;
 import 'package:stacked_services/src/bottom_sheet/bottom_sheet_service.dart'
     as _i6;
@@ -580,19 +582,41 @@ class MockDialogService extends _i1.Mock implements _i9.DialogService {
 /// See the documentation for Mockito's code generation for more information.
 class MockHttpService extends _i1.Mock implements _i11.HttpService {
   @override
-  _i4.Future<_i12.FundraisesListModel?> getFundraisesData() =>
+  String get apiLink => (super.noSuchMethod(
+        Invocation.getter(#apiLink),
+        returnValue: _i12.dummyValue<String>(
+          this,
+          Invocation.getter(#apiLink),
+        ),
+        returnValueForMissingStub: _i12.dummyValue<String>(
+          this,
+          Invocation.getter(#apiLink),
+        ),
+      ) as String);
+
+  @override
+  set apiLink(String? _apiLink) => super.noSuchMethod(
+        Invocation.setter(
+          #apiLink,
+          _apiLink,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i4.Future<_i13.FundraisesListModel?> getFundraisesData() =>
       (super.noSuchMethod(
         Invocation.method(
           #getFundraisesData,
           [],
         ),
-        returnValue: _i4.Future<_i12.FundraisesListModel?>.value(),
+        returnValue: _i4.Future<_i13.FundraisesListModel?>.value(),
         returnValueForMissingStub:
-            _i4.Future<_i12.FundraisesListModel?>.value(),
-      ) as _i4.Future<_i12.FundraisesListModel?>);
+            _i4.Future<_i13.FundraisesListModel?>.value(),
+      ) as _i4.Future<_i13.FundraisesListModel?>);
 
   @override
-  _i4.Future<_i13.FundraiseModel?> getSingleFundraiseData(
+  _i4.Future<_i14.FundraiseModel?> getSingleFundraiseData(
           {required String? id}) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -600,7 +624,41 @@ class MockHttpService extends _i1.Mock implements _i11.HttpService {
           [],
           {#id: id},
         ),
-        returnValue: _i4.Future<_i13.FundraiseModel?>.value(),
-        returnValueForMissingStub: _i4.Future<_i13.FundraiseModel?>.value(),
-      ) as _i4.Future<_i13.FundraiseModel?>);
+        returnValue: _i4.Future<_i14.FundraiseModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i14.FundraiseModel?>.value(),
+      ) as _i4.Future<_i14.FundraiseModel?>);
+
+  @override
+  _i4.Future<dynamic> postSingleDonationData({
+    required String? nama,
+    required String? nominal,
+    required String? kontak,
+    required String? pesan,
+    required int? id,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #postSingleDonationData,
+          [],
+          {
+            #nama: nama,
+            #nominal: nominal,
+            #kontak: kontak,
+            #pesan: pesan,
+            #id: id,
+          },
+        ),
+        returnValue: _i4.Future<dynamic>.value(),
+        returnValueForMissingStub: _i4.Future<dynamic>.value(),
+      ) as _i4.Future<dynamic>);
+
+  @override
+  _i4.Future<_i15.ArticlesModel?> getArticlesData() => (super.noSuchMethod(
+        Invocation.method(
+          #getArticlesData,
+          [],
+        ),
+        returnValue: _i4.Future<_i15.ArticlesModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i15.ArticlesModel?>.value(),
+      ) as _i4.Future<_i15.ArticlesModel?>);
 }

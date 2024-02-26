@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:infaq/models/fundraises_list_model.dart';
 import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
+import 'package:infaq/ui/common/app_values.dart';
 import 'package:infaq/ui/common/ui_helpers.dart';
 import 'package:infaq/ui/views/home/home_viewmodel.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -125,7 +126,7 @@ Widget _aboutUs(BuildContext context) {
 
                 //who are we
                 Text(
-                  "Who are we?",
+                  "Amala App Infaq",
                   style: ktsBodyRegular.copyWith(
                     color: kcVeryLightGrey,
                   ),
@@ -134,7 +135,7 @@ Widget _aboutUs(BuildContext context) {
 
                 //description
                 Text(
-                  faker.lorem.sentences(10).join(" "),
+                  about_us_paragraph_1,
                   maxLines: 5,
                   overflow: TextOverflow.ellipsis,
                   style: ktsBodyRegular.copyWith(color: kcWhite),

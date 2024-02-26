@@ -7,8 +7,9 @@ class WebLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'PT. Global Solution Provider (Infaq)',
-      style: ktsBodyLarge.copyWith(fontSize: 15, fontWeight: FontWeight.w800),
+      'Amala App Infaq',
+      style: ktsBodyLarge.copyWith(
+          fontSize: 20, fontWeight: FontWeight.w800, fontFamily: "Poppins"),
     );
   }
 }

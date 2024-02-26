@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:infaq/models/articles_model.dart';
 import 'package:infaq/ui/views/home/home_viewmodel.dart';
 import 'package:infaq/ui/views/home/widgets/fourth_section_parts/fs_articles.dart';
 import 'package:infaq/ui/views/home/widgets/fourth_section_parts/fs_gsp.dart';
