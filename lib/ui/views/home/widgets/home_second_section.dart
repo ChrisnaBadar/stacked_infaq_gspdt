@@ -229,7 +229,7 @@ Widget _urgentCause(BuildContext context, Map<String, dynamic> dataList,
                 //learn more
                 TextButton(
                     onPressed: () {
-                      print(dataList['causeId']);
+                      // print(dataList['causeId']);
                       viewModel.toCauseDetailsView(
                           causeId: dataList['causeId']);
                     },

@@ -38,12 +38,21 @@ class FsJoinInfo extends StatelessWidget {
                       color: kcVeryLightGrey),
                 ),
                 Text(
-                  faker.lorem.sentences(3).join(" "),
+                  "Saatnya kita bersama-sama menjadi bagian dari solusi, menjadi jembatan yang menghubungkan antara mereka yang ingin memberi dengan yang membutuhkan.",
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: ktsBodyRegular.copyWith(color: kcVeryLightGrey),
                 ),
-                ThemedButton(onPressed: () {}, buttonText: "APPLY NOW")
+                ThemedButton(
+                    onPressed: () {
+                      final snackBar = SnackBar(
+                        content: Text(
+                            'Halaman Fitur ini masih dalam tahap perbaikan'),
+                        duration: Duration(seconds: 3),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
+                    buttonText: "APPLY NOW")
               ],
             ),
           ))

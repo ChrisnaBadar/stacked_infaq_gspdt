@@ -119,14 +119,14 @@ class CauseDetailsMainRow extends StatelessWidget {
                   CauseDetailsDonationProgress(
                     fundraiseModel: fundraiseModel!,
                   ),
-                  pdfReport()
+                  // pdfReport()
                 ],
               ),
               mobile: (_) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CauseDetailsDonationProgress(fundraiseModel: fundraiseModel!),
-                  pdfReport()
+                  // pdfReport()
                 ],
               ),
             ),
@@ -221,12 +221,12 @@ class CauseDetailsMainRow extends StatelessWidget {
     );
   }
 
-  TextButton pdfReport() {
-    return TextButton.icon(
-        onPressed: () {},
-        icon: const Icon(Icons.document_scanner_outlined),
-        label: const Text('Download PDF Report'));
-  }
+  // TextButton pdfReport() {
+  //   return TextButton.icon(
+  //       onPressed: () {},
+  //       icon: const Icon(Icons.document_scanner_outlined),
+  //       label: const Text('Download PDF Report'));
+  // }
 
   ThemedButton donateButton() {
     return ThemedButton(

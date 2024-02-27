@@ -136,7 +136,7 @@ class _HomeHeaderState extends State<HomeHeader> {
 
   Widget _secondChild(HomeViewModel viewModel, int id, String title,
       String description, String causeId) {
-    print(title);
+    // print(title);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       height: 400,

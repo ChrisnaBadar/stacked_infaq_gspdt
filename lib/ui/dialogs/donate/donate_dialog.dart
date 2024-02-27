@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:infaq/ui/common/app_colors.dart';
 import 'package:infaq/ui/common/app_constants.dart';
 import 'package:infaq/ui/common/app_shared_style.dart';
 import 'package:infaq/ui/common/ui_helpers.dart';
@@ -119,6 +120,11 @@ class DonateDialog extends StackedView<DonateDialogModel> with $DonateDialog {
                         // ),
                       ],
                     ),
+                    Text(
+                      "ⓘ Data laporan progress akan disampaikan via email",
+                      style: ktsBodyRegular.copyWith(
+                          fontSize: 9, color: kcPrimaryColorDark),
+                    ),
                     // Row(
                     //   children: [
                     //     Expanded(
@@ -172,8 +178,8 @@ class DonateDialog extends StackedView<DonateDialogModel> with $DonateDialog {
                             if (cleanedInput.contains(',')) {
                               cleanedInput = cleanedInput.split(',')[0];
                             }
-                            print(
-                                "id: ${request.data} \nNama: ${nameController.text} \nNominal: $cleanedInput \nKontak: ${phoneController.text} \nDoa: ${doaController.text}");
+                            // print(
+                            // "id: ${request.data} \nNama: ${nameController.text} \nNominal: $cleanedInput \nKontak: ${phoneController.text} \nDoa: ${doaController.text}");
                             viewModel.postDonationData(
                                 nama: nameController.text,
                                 nominal: cleanedInput,
@@ -192,7 +198,7 @@ class DonateDialog extends StackedView<DonateDialogModel> with $DonateDialog {
                     ),
                     TextButton(
                         onPressed: () {
-                          viewModel.toPrivacyPolicyView();
+                          viewModel.toTermsConditionsView();
                           completer(DialogResponse(confirmed: true));
                         },
                         child: Text("Syarat & Ketentuan"))

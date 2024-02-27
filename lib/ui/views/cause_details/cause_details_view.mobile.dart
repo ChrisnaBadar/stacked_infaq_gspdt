@@ -16,7 +16,7 @@ class CauseDetailsViewMobile extends ViewModelWidget<CauseDetailsViewModel> {
           future: viewModel.getFundraiseData(id: causeId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             } else if (snapshot.connectionState == ConnectionState.done) {
               final fundraiseModel = snapshot.data!;
               return ListView(

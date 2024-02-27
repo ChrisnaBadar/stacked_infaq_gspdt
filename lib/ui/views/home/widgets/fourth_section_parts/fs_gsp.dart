@@ -38,12 +38,20 @@ class FsGsp extends StatelessWidget {
                       color: kcVeryLightGrey),
                 ),
                 Text(
-                  faker.lorem.sentences(3).join(" "),
+                  "Beroperasi di bawah naungan Pondok Pesantren Daarut Tauhiid, kami membawa nilai-nilai kebersamaan dan kepercayaan dalam setiap layanan yang kami tawarkan.",
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: ktsBodyRegular.copyWith(color: kcVeryLightGrey),
                 ),
-                ThemedButton(onPressed: () {}, buttonText: "CONTACT")
+                ThemedButton(
+                    onPressed: () {
+                      final snackBar = SnackBar(
+                        content: Text('Website gspdt.co.id dalam maintenance'),
+                        duration: Duration(seconds: 3),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
+                    buttonText: "CONTACT")
               ],
             ),
           ))

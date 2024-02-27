@@ -68,7 +68,7 @@ class ContainerWidget extends StatelessWidget {
       color: Colors.blue[(data['int'] as int) * 100],
       child: TextButton(
         onPressed: () {
-          print('Button ${data['number']} clicked');
+          // print('Button ${data['number']} clicked');
         },
         child: Text('Button ${data['number']}'),
       ),

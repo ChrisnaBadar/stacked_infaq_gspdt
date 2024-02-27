@@ -141,14 +141,30 @@ class CauseDetailsSecondaryRow extends StatelessWidget {
                   Expanded(
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child:
-                        ThemedButton(onPressed: () {}, buttonText: "See All"),
+                    child: ThemedButton(
+                        onPressed: () {
+                          final snackBar = SnackBar(
+                            content: Text(
+                                'Halaman Fitur ini masih dalam tahap perbaikan'),
+                            duration: Duration(seconds: 3),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        },
+                        buttonText: "See All"),
                   )),
                   Expanded(
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child:
-                        ThemedButton(onPressed: () {}, buttonText: "See Top"),
+                    child: ThemedButton(
+                        onPressed: () {
+                          final snackBar = SnackBar(
+                            content: Text(
+                                'Halaman Fitur ini masih dalam tahap perbaikan'),
+                            duration: Duration(seconds: 3),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        },
+                        buttonText: "See Top"),
                   )),
                 ],
               )

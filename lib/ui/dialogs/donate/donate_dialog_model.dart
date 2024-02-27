@@ -8,8 +8,8 @@ class DonateDialogModel extends FormViewModel {
   final _httpService = locator<HttpService>();
   final _routerService = locator<RouterService>();
 
-  Future<void> toPrivacyPolicyView() async {
-    await _routerService.navigateToPrivacyPolicyView();
+  Future<void> toTermsConditionsView() async {
+    await _routerService.navigateToTermsConditionsView();
   }
 
   Future postDonationData(

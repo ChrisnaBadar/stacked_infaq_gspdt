@@ -18,7 +18,7 @@ class HttpService {
     if (result.statusCode == 200) {
       return FundraisesListModel.fromRawJson(result.body);
     } else {
-      print("result: ${result.reasonPhrase}");
+      // print("result: ${result.reasonPhrase}");
       return null;
     }
   }
@@ -31,7 +31,7 @@ class HttpService {
     if (result.statusCode == 200) {
       return FundraiseModel.fromRawJson(result.body);
     } else {
-      print('myresult: ${result.reasonPhrase}');
+      // print('myresult: ${result.reasonPhrase}');
       return null;
     }
   }
@@ -63,7 +63,7 @@ class HttpService {
 
     if (response.statusCode == 200) {
       String responseBody = await response.stream.bytesToString();
-      print(responseBody);
+      // print(responseBody);
       Map<String, dynamic> jsonResponse = json.decode(responseBody);
       String redirectUrl = jsonResponse['redirect_url'];
 
@@ -75,7 +75,8 @@ class HttpService {
         throw 'Could not launch $redirectUrl';
       }
     } else {
-      print(response.reasonPhrase);
+      // print(response.reasonPhrase);
+      return null;
     }
   }
 
@@ -87,7 +88,7 @@ class HttpService {
     if (result.statusCode == 200) {
       return ArticlesModel.fromRawJson(result.body);
     } else {
-      print("result: ${result.reasonPhrase}");
+      // print("result: ${result.reasonPhrase}");
       return null;
     }
   }
